@@ -1,4 +1,4 @@
-import Time from '../openrest4js-helpers/Time.js';
+import Time from '../helpers/Time.js';
 
 export default function createAvailability() {
     let fixture = {weekly: []};

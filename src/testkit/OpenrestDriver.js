@@ -1,7 +1,7 @@
 import {CommonProtocolDriver} from './CommonProtocolDriver';
 import NockProtocolDriver from './NockProtocolDriver';
 
-export default class OpenrestDriver {
+export default class WixRestaurantsDriver {
 
     /**
      * Type can be:

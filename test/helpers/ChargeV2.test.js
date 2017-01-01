@@ -1,9 +1,9 @@
-import ChargeV2 from '../../src/openrest4js-helpers/ChargeV2.js';
+import ChargeV2 from '../../src/helpers/ChargeV2.js';
 import { expect } from 'chai';
 import moment from 'moment';
 import { fixtures } from '../../src/index.js';
 
-describe('openrest4js-helpers: ChargesV2', () => {
+describe('helpers: ChargesV2', () => {
 
     describe('isApplicable', () => {
 

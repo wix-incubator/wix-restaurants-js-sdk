@@ -1,12 +1,12 @@
 import { expect }         from 'chai';
 import { XMLHttpRequest } from 'xhr2';
-import OpenrestDriver     from './OpenrestDriver';
-import {OpenrestClient}   from '../src/index.js';
+import WixRestaurantsDriver     from './WixRestaurantsDriver';
+import {WixRestaurantsClient}   from '../src/index.js';
 
-describe('OpenrestClient', () => {
+describe('WixRestaurantsClient', () => {
     const port           = 8086;
-    const openrestClient = new OpenrestClient({ XMLHttpRequest, apiUrl : `http://localhost:${port}/` });
-    const driver         = new OpenrestDriver({ port });
+    const wixRestaurantsClient = new WixRestaurantsClient({ XMLHttpRequest, apiUrl : `http://localhost:${port}/` });
+    const driver         = new WixRestaurantsDriver({ port });
 
     before(() => {
         driver.start();
@@ -31,7 +31,7 @@ describe('OpenrestClient', () => {
                 value : someValue
             });
 
-            openrestClient.request({
+            wixRestaurantsClient.request({
                 request : someRequest,
                 callback : response => {
                     expect(response.value).to.deep.equal(someValue);
@@ -50,7 +50,7 @@ describe('OpenrestClient', () => {
                 description : someDescription
             });
 
-            openrestClient.request({
+            wixRestaurantsClient.request({
                 request : someRequest,
                 callback : response => {
                     expect(response.error).to.equal(someCode);
@@ -61,7 +61,7 @@ describe('OpenrestClient', () => {
         });
 
         it ('gracefully fails on timeout', done => {
-            const openrestClientWithTimeout = new OpenrestClient({
+            const wixRestaurantsClientWithTimeout = new WixRestaurantsClient({
                 apiUrl : `http://localhost:${port}/`,
                 XMLHttpRequest,
                 timeout: 10
@@ -74,7 +74,7 @@ describe('OpenrestClient', () => {
                 delay : 100
             });
 
-            openrestClientWithTimeout.request({
+            wixRestaurantsClientWithTimeout.request({
                 request : someRequest,
                 callback : response => {
                     expect(response.error).to.equal('timeout');
@@ -86,12 +86,12 @@ describe('OpenrestClient', () => {
 
         it ('gracefully fails when network is down', done => {
             const invalidUrl = 'http://whatever.noexist';
-            const openrestClientWithInvalidEndpointUrl = new OpenrestClient({
+            const wixRestaurantsClientWithInvalidEndpointUrl = new WixRestaurantsClient({
                 XMLHttpRequest,
                 apiUrl : invalidUrl
             });
 
-            openrestClientWithInvalidEndpointUrl.request({
+            wixRestaurantsClientWithInvalidEndpointUrl.request({
                 request : someRequest,
                 callback : response => {
                     expect(response.error).to.equal('network_down');
@@ -106,7 +106,7 @@ describe('OpenrestClient', () => {
                 request : someRequest
             }).protocolErrors();
 
-            openrestClient.request({
+            wixRestaurantsClient.request({
                 request : someRequest,
                 callback : response => {
                     expect(response.error).to.equal('protocol');

@@ -1,4 +1,4 @@
-export default class OpenrestClient {
+export default class WixRestaurantsClient {
     constructor({ XMLHttpRequest, timeout = 0, apiUrl = 'https://api.wixrestaurants.com/v1.1' }) {
         this.apiUrl         = apiUrl;
         this.timeout        = timeout;

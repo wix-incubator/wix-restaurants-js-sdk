@@ -1,10 +1,10 @@
 import {expect} from 'chai';
-import {OpenrestClient} from '../../src/index.js';
-import {OpenrestDriver} from '../../src/openrest4js-testkit';
+import {WixRestaurantsClient} from '../../src/index.js';
+import {WixRestaurantsDriver} from '../../src/testkit';
 import {XMLHttpRequest} from 'xhr2';
 import _ from 'lodash';
 
-describe('OpenrestDriver', () => {
+describe('WixRestaurantsDriver', () => {
 
     function tests(driver, client) {
 
@@ -97,8 +97,8 @@ describe('OpenrestDriver', () => {
         const host = 'dsadsadas' + Math.random() + '.com';
         const version = '' + Math.random();
 
-        const driver = new OpenrestDriver({type:'nock', params:{url:`https://${host}`, version}});
-        const client = new OpenrestClient({XMLHttpRequest, apiUrl:`https://${host}/${version}`});
+        const driver = new WixRestaurantsDriver({type:'nock', params:{url:`https://${host}`, version}});
+        const client = new WixRestaurantsClient({XMLHttpRequest, apiUrl:`https://${host}/${version}`});
 
         tests(driver, client);
     });
@@ -107,8 +107,8 @@ describe('OpenrestDriver', () => {
         const port = 8099;
         const url = 'http://localhost:8099';
 
-        const driver = new OpenrestDriver({type:'localNetwork', params:{port}});
-        const client = new OpenrestClient({XMLHttpRequest, apiUrl:url});
+        const driver = new WixRestaurantsDriver({type:'localNetwork', params:{port}});
+        const client = new WixRestaurantsClient({XMLHttpRequest, apiUrl:url});
 
         tests(driver, client);
     });

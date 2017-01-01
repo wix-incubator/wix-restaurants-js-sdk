@@ -17,7 +17,8 @@
     "url": "https://github.com/wix/wix-restaurants-js-sdk.git"
   },
   "keywords": [
-    "wix restaurants"
+    "wix",
+    "restaurants"
   ],
   "author": "Wix Restaurants",
   "license": "Apache-2.0",

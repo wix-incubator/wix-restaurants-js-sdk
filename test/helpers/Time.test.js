@@ -4,7 +4,7 @@ import {helpers} from '../../src/index.js';
 
 const {Time} = helpers;
 
-describe('openrest4js-helpers: Time', () => {
+describe('helpers: Time', () => {
 
     describe('getMinuteOfWeek', () => {
         it('returns the minute of week of a certain date', () => {

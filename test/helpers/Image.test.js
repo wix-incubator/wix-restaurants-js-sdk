@@ -1,7 +1,7 @@
 'use strict';
 
 import {expect} from 'chai';
-import Image from '../../src/openrest4js-helpers/Image';
+import Image from '../../src/helpers/Image';
 
 describe('Image', () => {
 

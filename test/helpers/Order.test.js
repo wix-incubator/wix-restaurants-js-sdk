@@ -5,7 +5,7 @@ import moment from 'moment-timezone';
 
 const Order = helpers.Order;
 
-describe('openrest4js-helpers: Order', () => {
+describe('helpers: Order', () => {
     describe('getOrderCharges', () => {
         it('returns the orderCharges according to the order', () => {
 

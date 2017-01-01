@@ -1,4 +1,4 @@
-#openrest4js
+#wix-restaurants-js-sdk
 
 [![NPM version][npm-image]][npm-url] [![Downloads][downloads-image]][npm-url]
 
@@ -15,7 +15,7 @@ To use the client, it is perfered to use the derived [openrest4node](https://git
 ## Fixture
 Fixtures let you create openrest objects using functions. Example:
 ```javascript
-import {fixtures} from 'openrest4js';
+import {fixtures} from 'wix-restaurants-js-sdk';
 
 const charge = fixtures.ChargeV2().
     deliveryTypes(['delivery']).
@@ -66,7 +66,7 @@ Helper functions to work with image URLs.
 - ```fill({url, width, height})``` - Returns a URL that serves the resized image. Passing 0 for width or height means maximum size.
 
 
-[downloads-image]: https://img.shields.io/npm/dm/openrest4js.svg
+[downloads-image]: https://img.shields.io/npm/dm/wix-restaurants-js-sdk.svg
 
-[npm-url]: https://npmjs.org/package/openrest4js
-[npm-image]: https://img.shields.io/npm/v/openrest4js.svg
+[npm-url]: https://npmjs.org/package/wix-restaurants-js-sdk
+[npm-image]: https://img.shields.io/npm/v/wix-restaurants-js-sdk.svg
