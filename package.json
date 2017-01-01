@@ -1,7 +1,7 @@
 {
-  "name": "openrest4js",
-  "version": "1.0.2",
-  "description": "The Openrest SDK for JavaScript",
+  "name": "wix-restaurants-js-sdk",
+  "version": "1.0.0",
+  "description": "Wix Restaurants JavaScript SDK",
   "main": "dist/index.js",
   "scripts": {
     "test": "mocha --require test/setup.js \"test/**/*.test.js\"",
@@ -14,17 +14,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/wix/openrest4js.git"
+    "url": "https://github.com/wix/wix-restaurants-js-sdk.git"
   },
   "keywords": [
-    "openrest"
+    "wix restaurants"
   ],
   "author": "Wix Restaurants",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/wix/openrest4js/issues"
+    "url": "https://github.com/wix/wix-restaurants-js-sdk/issues"
   },
-  "homepage": "https://github.com/wix/openrest4js",
+  "homepage": "https://github.com/wix/wix-restaurants-js-sdk",
   "dependencies": {
     "availability": "^2.1.254",
     "moment": "^2.15.2",
