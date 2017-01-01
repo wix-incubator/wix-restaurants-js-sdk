@@ -39,7 +39,8 @@ class NockProtocolDriver {
 
         nock(this.url)
             .post('/' + this.version)
-            .delayConnection(delay || 0)
+            .socketDelay(delay || 0)
+            .delay(delay || 0)
             .times(-1)
             .reply((uri, body) => {
                 if (shouldHandle(body)) {

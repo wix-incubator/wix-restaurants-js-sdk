@@ -98,7 +98,7 @@ describe('WixRestaurantsDriver', () => {
         const version = '' + Math.random();
 
         const driver = new WixRestaurantsDriver({type:'nock', params:{url:`https://${host}`, version}});
-        const client = new WixRestaurantsClient({XMLHttpRequest, apiUrl:`https://${host}/${version}`});
+        const client = new WixRestaurantsClient({XMLHttpRequest, apiUrl:`https://${host}/${version}`, timeout:1000});
 
         tests(driver, client);
     });
