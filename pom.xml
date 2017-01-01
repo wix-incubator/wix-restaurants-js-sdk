@@ -3,30 +3,22 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <groupId>com.wixpress.restaurants</groupId>
-    <artifactId>openrest4js</artifactId>
-    <name>The Openrest client for JavaScript</name>
-    <description>The Openrest client for JavaScript</description>
+    <groupId>com.wix.restaurants</groupId>
+    <artifactId>wix-restaurants-js-sdk</artifactId>
+    <name>Wix Restaurants JavaScript SDK</name>
+    <description>Wix Restaurants JavaScript SDK</description>
 
-    <parent>
-        <groupId>com.wixpress.common</groupId>
-        <artifactId>wix-master-parent</artifactId>
-        <version>100.0.0-SNAPSHOT</version>
-        <relativePath />
-    </parent>
+	<parent>
+		<groupId>com.wix</groupId>
+		<artifactId>wix-oss-parent</artifactId>
+		<version>1.4.0</version>
+	</parent>
 
     <modelVersion>4.0.0</modelVersion>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <developers>
-        <developer>
-            <name>Danny Leshem</name>
-            <email>dannyl@wix.com</email>
-            <roles>
-                <role>owner</role>
-            </roles>
-        </developer>
         <developer>
             <name>Yoav Amit</name>
             <email>yoava@wix.com</email>
@@ -35,8 +27,8 @@
             </roles>
         </developer>
         <developer>
-            <name>Guy Benron</name>
-            <email>guybe@wix.com</email>
+            <name>Danny Leshem</name>
+            <email>dannyl@wix.com</email>
             <roles>
                 <role>owner</role>
             </roles>
