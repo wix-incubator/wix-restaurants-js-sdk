@@ -2,14 +2,14 @@ import Q from 'q';
 
 export const Endpoints = {
     production: 'https://api.wixrestaurants.com/v1.1'
-}
+};
 
 export default class WixRestaurantsClient {
     constructor({ endpointUrl = Endpoints.production, timeout = 0 }) {
         this._endpointUrl = endpointUrl;
         this._timeout = timeout;
     }
-    
+
     getOrganization({organizationId, fields = null}) {
         return this._request({
             request: {
@@ -73,7 +73,7 @@ export default class WixRestaurantsClient {
         xhr.setRequestHeader('Accept', 'application/json');
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(JSON.stringify(request));
-        
+
         return deferred.promise;
     }
 }
