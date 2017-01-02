@@ -8,7 +8,7 @@ This package contains the following modules:
 To use the client, it is perfered to use the derived [openrest4node](https://github.com/wix/openrest4node)
 
 ## Fixture
-Fixtures let you create openrest objects using functions. Example:
+Fixtures let you create Wix Restaurants data structures using functions. Example:
 ```javascript
 import {fixtures} from 'wix-restaurants-js-sdk';
 
