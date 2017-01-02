@@ -1,12 +1,7 @@
-#wix-restaurants-js-sdk
+# Wix Restaurants JavaScript SDK
+Official JavaScript client for the [Wix Restaurants API](http://developers.wixrestaurants.com).
 
 [![NPM version][npm-image]][npm-url] [![Downloads][downloads-image]][npm-url]
-
-[OpenRest](http://www.openrest.com/) (founded early 2011) is a cloud-based service that enables restaurant owners to easily create online ordering websites, mobile websites and native mobile apps. As of September 2014, a total of almost a thousand restaurants power their online ordering systems with OpenRest.
-
-OpenRest offers an open API for developers. The OpenRest API is exposed as a standard web service communicating JSON over HTTPS.
-
-OpenRest was acquired by Wix.com in later 2014, and can now be found as [Wix Restaurants](http://www.wix.com/restaurant/website).
 
 This package contains three different modules:
 ## Client
