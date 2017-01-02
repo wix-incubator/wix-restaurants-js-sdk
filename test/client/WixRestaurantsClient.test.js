@@ -122,11 +122,11 @@ describe('WixRestaurantsClient', () => {
     });
     
     describe('getOrganization', () => {
-        it ('successfully returns the organization', () => {
+        it('returns the organization', () => {
             driver.getOrganization({
                 organizationId: someRestaurant.id,
                 fields: allFields
-            }).returns({
+            }).succeedWith({
                 value: someRestaurant
             });
 
