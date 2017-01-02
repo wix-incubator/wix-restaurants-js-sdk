@@ -6,8 +6,8 @@ import {WixRestaurantsDriver} from '../../src/testkit';
 global.XMLHttpRequest = XMLHttpRequest;
 
 describe('WixRestaurantsClient', () => {
-    const url = 'http://www.example.org'
-    const version = 'v1.1'
+    const url = 'http://www.example.org';
+    const version = 'v1.1';
     const endpointUrl = `${url}/${version}`;
     const invalidEndpointUrl = 'http://whatever.noexist';
     const wixRestaurantsClient = new WixRestaurantsClient({endpointUrl});
@@ -30,17 +30,17 @@ describe('WixRestaurantsClient', () => {
     beforeEach(() => {
         driver.reset();
     });
-    
+
     const someRestaurant = {
         type: 'restaurant',
         id: 'some-restaurant-id'
-    }
+    };
     const someError = {
         code: 'invalid_data',
         description: 'invalid data'
-    }
+    };
     const allFields = null;
-    
+
     // Applies to all requests, using getOrganization just for example
     describe('any method', () => {
         it ('gracefully fails on error', () => {
@@ -50,14 +50,14 @@ describe('WixRestaurantsClient', () => {
             }).failWith(
                 someError
             );
-            
+
             return wixRestaurantsClient.getOrganization({
                 organizationId: someRestaurant.id,
                 fields: allFields
-            }).then((organization) => {
+            }).then((/*organization*/) => {
                 assert.fail(false, true, 'expected error');
             }, ({error}) => {
-                expect(error).to.deep.equal(someError)
+                expect(error).to.deep.equal(someError);
             });
         });
 
@@ -75,11 +75,11 @@ describe('WixRestaurantsClient', () => {
             }).succeedWith({
                 value: someRestaurant
             });
-            
+
             return wixRestaurantsClientWithTimeout.getOrganization({
                 organizationId: someRestaurant.id,
                 fields: allFields
-            }).then((organization) => {
+            }).then((/*organization*/) => {
                 assert.fail(false, true, 'expected error');
             }, ({error}) => {
                 expect(error.code).to.equal('timeout');
@@ -91,11 +91,11 @@ describe('WixRestaurantsClient', () => {
             const wixRestaurantsClientWithInvalidEndpointUrl = new WixRestaurantsClient({
                 endpointUrl : invalidEndpointUrl
             });
-            
+
             return wixRestaurantsClientWithInvalidEndpointUrl.getOrganization({
                 organizationId: someRestaurant.id,
                 fields: allFields
-            }).then((organization) => {
+            }).then((/*organization*/) => {
                 assert.fail(false, true, 'expected error');
             }, ({error}) => {
                 expect(error.code).to.equal('network_down');
@@ -108,11 +108,11 @@ describe('WixRestaurantsClient', () => {
                 organizationId: someRestaurant.id,
                 fields: allFields
             }).failWithProtocolError();
-            
+
             return wixRestaurantsClient.getOrganization({
                 organizationId: someRestaurant.id,
                 fields: allFields
-            }).then((organization) => {
+            }).then((/*organization*/) => {
                 assert.fail(false, true, 'expected error');
             }, ({error}) => {
                 expect(error.code).to.equal('protocol');
@@ -120,7 +120,7 @@ describe('WixRestaurantsClient', () => {
             });
         });
     });
-    
+
     describe('getOrganization', () => {
         it('returns the organization', () => {
             driver.getOrganization({
@@ -135,7 +135,7 @@ describe('WixRestaurantsClient', () => {
                 fields: allFields
             }).then((organization) => {
                 expect(organization).to.deep.equal(someRestaurant);
-            })
+            });
         });
     });
 });
