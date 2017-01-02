@@ -3,7 +3,7 @@ Official JavaScript client for the [Wix Restaurants API](http://developers.wixre
 
 [![NPM version][npm-image]][npm-url] [![Downloads][downloads-image]][npm-url]
 
-This package contains three different modules:
+This package contains three modules:
 ## Client
 To use the client, it is perfered to use the derived [openrest4node](https://github.com/wix/openrest4node)
 
