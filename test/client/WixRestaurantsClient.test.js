@@ -82,7 +82,6 @@ describe('WixRestaurantsClient', () => {
             }).then((organization) => {
                 assert.fail(false, true, 'expected error');
             }, (error) => {
-                console.log("456: " + error);
                 expect(error.code).to.equal('timeout');
                 expect(error.description).to.not.be.empty;
             });
