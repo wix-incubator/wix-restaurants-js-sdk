@@ -92,7 +92,7 @@ describe('WixRestaurantsClient', () => {
                 endpointUrl : invalidEndpointUrl
             });
             
-            return wixRestaurantsClient.getOrganization({
+            return wixRestaurantsClientWithInvalidEndpointUrl.getOrganization({
                 organizationId: someRestaurant.id,
                 fields: allFields
             }).then((organization) => {
