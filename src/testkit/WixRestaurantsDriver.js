@@ -5,7 +5,7 @@ export default class WixRestaurantsDriver {
 
     /**
      * Type can be:
-     *      'common' uses a network mock. the params should include [port].
+     *      'localNetwork' uses a network mock. the params should include [port].
      *      'nock' users nock. the params should include [url].
      */
     constructor({ type, params }) {
@@ -29,7 +29,7 @@ export default class WixRestaurantsDriver {
     reset() {
         this._driver.reset();
     }
-    
+
     getOrganization({ organizationId, fields = null }) {
         return this._aRequestFor({
             request: {
