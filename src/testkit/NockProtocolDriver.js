@@ -19,7 +19,7 @@ class NockProtocolDriver {
         nock.cleanAll();
     }
 
-    addRule({request, delay, response}) {
+    addRule({request, delay, response, useRawResponse}) {
 
         const shouldHandle = (body) => {
             if (typeof(request) === 'function') {
@@ -32,6 +32,8 @@ class NockProtocolDriver {
         const respond = (body) => {
             if (typeof(response) === 'function') {
                 return response(body);
+            } if (useRawResponse) {
+                return [200, response];
             } else {
                 return [200, JSON.stringify(response)];
             }

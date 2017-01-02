@@ -47,21 +47,21 @@ describe('WixRestaurantsClient', () => {
             driver.getOrganization({
                 organizationId: someRestaurant.id,
                 fields: allFields
-            }).fails({
-                error: someError
-            });
+            }).failWith(
+                someError
+            );
             
             return wixRestaurantsClient.getOrganization({
                 organizationId: someRestaurant.id,
                 fields: allFields
             }).then((organization) => {
                 assert.fail(false, true, 'expected error');
-            }, (error) => {
+            }, ({error}) => {
                 expect(error).to.deep.equal(someError)
             });
         });
 
-        it.only ('gracefully fails on timeout', () => {
+        it('gracefully fails on timeout', () => {
             const wixRestaurantsClientWithTimeout = new WixRestaurantsClient({
                 endpointUrl,
                 timeout: 10
@@ -76,12 +76,12 @@ describe('WixRestaurantsClient', () => {
                 value: someRestaurant
             });
             
-            return wixRestaurantsClient.getOrganization({
+            return wixRestaurantsClientWithTimeout.getOrganization({
                 organizationId: someRestaurant.id,
                 fields: allFields
             }).then((organization) => {
                 assert.fail(false, true, 'expected error');
-            }, (error) => {
+            }, ({error}) => {
                 expect(error.code).to.equal('timeout');
                 expect(error.description).to.not.be.empty;
             });
@@ -97,7 +97,7 @@ describe('WixRestaurantsClient', () => {
                 fields: allFields
             }).then((organization) => {
                 assert.fail(false, true, 'expected error');
-            }, (error) => {
+            }, ({error}) => {
                 expect(error.code).to.equal('network_down');
                 expect(error.description).to.not.be.empty;
             });
@@ -107,14 +107,14 @@ describe('WixRestaurantsClient', () => {
             driver.getOrganization({
                 organizationId: someRestaurant.id,
                 fields: allFields
-            }).failsWithProtocolError();
+            }).failWithProtocolError();
             
             return wixRestaurantsClient.getOrganization({
                 organizationId: someRestaurant.id,
                 fields: allFields
             }).then((organization) => {
                 assert.fail(false, true, 'expected error');
-            }, (error) => {
+            }, ({error}) => {
                 expect(error.code).to.equal('protocol');
                 expect(error.description).to.not.be.empty;
             });
