@@ -1,42 +1,79 @@
+import Q from 'q';
+
+export const Endpoints = {
+    production: 'https://api.wixrestaurants.com/v1.1'
+}
+
 export default class WixRestaurantsClient {
-    constructor({ XMLHttpRequest, timeout = 0, apiUrl = 'https://api.wixrestaurants.com/v1.1' }) {
-        this.apiUrl         = apiUrl;
-        this.timeout        = timeout;
-        this.XMLHttpRequest = XMLHttpRequest;
+    constructor({ endpointUrl = Endpoints.production, timeout = 0 }) {
+        this._endpointUrl = endpointUrl;
+        this._timeout = timeout;
+    }
+    
+    getOrganization({organizationId, fields = null}) {
+        return this._request({
+            request: {
+                type: 'get_organization',
+                organizationId,
+                fields
+            }
+        });
     }
 
-    request({request = {}, callback = () => {}}) {
-        const xhr = new this.XMLHttpRequest();
+    _request({request = {}}) {
+        const deferred = Q.defer();
+        const xhr = new XMLHttpRequest();
 
-        xhr.ontimeout = () => callback({
-            error: 'timeout',
-            errorMessage: 'request timed out'
-        });
+        xhr.ontimeout = () => {
+            deferred.reject({
+                error: {
+                    code: 'timeout',
+                    description: 'request timed out'
+                }
+            });
+        };
 
-        xhr.onerror = () => callback({
-            error: 'network_down',
-            errorMessage: 'network is down'
-        });
+        xhr.onerror = () => {
+            deferred.reject({
+                error: {
+                    code: 'network_down',
+                    description: 'network is down'
+                }
+            });
+        };
 
         xhr.onload = () => {
             let response = null;
             try {
                 response = JSON.parse(xhr.responseText);
             } catch (e) {
-                callback({
-                    error: 'protocol',
-                    errorMessage: 'protocol error'
+                deferred.reject({
+                    error: {
+                        code: 'protocol',
+                        description: 'protocol error'
+                    }
                 });
                 return;
             }
 
-            callback(response);
+            if (response.error) {
+                deferred.reject({
+                    error: {
+                        code: response.error,
+                        description: response.errorMessage
+                    }
+                });
+            } else {
+                deferred.resolve(response.value);
+            }
         };
 
-        xhr.open('POST', this.apiUrl, true);
-        xhr.timeout = this.timeout;
+        xhr.open('POST', this._endpointUrl, true);
+        xhr.timeout = this._timeout;
         xhr.setRequestHeader('Accept', 'application/json');
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(JSON.stringify(request));
+        
+        return deferred.promise;
     }
 }

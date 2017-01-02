@@ -33,7 +33,7 @@ class NockProtocolDriver {
             if (typeof(response) === 'function') {
                 return response(body);
             } else {
-                return [200, response];
+                return [200, JSON.stringify(response)];
             }
         };
 

@@ -29,9 +29,18 @@ export default class WixRestaurantsDriver {
     reset() {
         this._driver.reset();
     }
+    
+    getOrganization({ organizationId, fields = null }) {
+        return this._aRequestFor({
+            request: {
+                type: 'get_organization',
+                organizationId,
+                fields
+            }
+        });
+    }
 
-    requestFor({ request }) {
-
+    _aRequestFor({ request }) {
         const params = {
             resource : '/',
             request
@@ -43,8 +52,8 @@ export default class WixRestaurantsDriver {
                 return _this;
             },
 
-            succeedWith: ({response}) => {
-                params.response = response;
+            succeedWith: ({value}) => {
+                params.response = {value};
 
                 this._driver.addRule(params);
             },

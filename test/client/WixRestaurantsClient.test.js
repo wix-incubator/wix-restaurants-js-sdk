@@ -1,13 +1,23 @@
-import { expect }         from 'chai';
+import { assert, expect }         from 'chai';
 import { XMLHttpRequest } from 'xhr2';
-import {WixRestaurantsClient} from '../../src/index.js';
+import {WixRestaurantsClient} from '../../src/index';
 import {WixRestaurantsDriver} from '../../src/testkit';
 
+global.XMLHttpRequest = XMLHttpRequest;
+
 describe('WixRestaurantsClient', () => {
-    const host = '' + Math.random() + '.com';
-    const version = '' + Math.random();
-    const wixRestaurantsClient = new WixRestaurantsClient({XMLHttpRequest, apiUrl:`https://${host}/${version}`});
-    const driver = new WixRestaurantsDriver({type:'nock', params:{url:`https://${host}`, version}});
+    const url = 'http://www.example.org'
+    const version = 'v1.1'
+    const endpointUrl = `${url}/${version}`;
+    const invalidEndpointUrl = 'http://whatever.noexist';
+    const wixRestaurantsClient = new WixRestaurantsClient({endpointUrl});
+    const driver = new WixRestaurantsDriver({
+        type: 'nock',
+        params: {
+            url,
+            version
+        }
+    });
 
     before(() => {
         driver.start();
@@ -20,102 +30,113 @@ describe('WixRestaurantsClient', () => {
     beforeEach(() => {
         driver.reset();
     });
-
-    describe('request', () => {
-        const someRequest = { type : 'SOME_TYPE' };
-        const someValue   = 'SOME_VALUE';
-
-        it ('sends a request and returns the value on success', done => {
-            driver.requestFor({
-                request : someRequest
-            }).succeedWith({
-                response:{ value : someValue }
+    
+    const someRestaurant = {
+        type: 'restaurant',
+        id: 'some-restaurant-id'
+    }
+    const someError = {
+        code: 'invalid_data',
+        description: 'invalid data'
+    }
+    const allFields = null;
+    
+    // Applies to all requests, using getOrganization just for example
+    describe('any method', () => {
+        it ('gracefully fails on error', () => {
+            driver.getOrganization({
+                organizationId: someRestaurant.id,
+                fields: allFields
+            }).fails({
+                error: someError
             });
-
-            wixRestaurantsClient.request({
-                request : someRequest,
-                callback : response => {
-                    expect(response.value).to.deep.equal(someValue);
-                    done();
-                }
-            });
-        });
-
-        it ('gracefully fails when response indicates error', done => {
-            const someCode        = 'SOME_CODE';
-            const someDescription = 'SOME_DESCRIPTION';
-            driver.requestFor({
-                request : someRequest
-            }).failWith({
-                code : someCode,
-                description : someDescription
-            });
-
-            wixRestaurantsClient.request({
-                request : someRequest,
-                callback : response => {
-                    expect(response.error).to.equal(someCode);
-                    expect(response.errorMessage).to.equal(someDescription);
-                    done();
-                }
+            
+            return wixRestaurantsClient.getOrganization({
+                organizationId: someRestaurant.id,
+                fields: allFields
+            }).then((organization) => {
+                assert.fail(false, true, 'expected error');
+            }, (error) => {
+                expect(error).to.deep.equal(someError)
             });
         });
 
-        it ('gracefully fails on timeout', done => {
+        it.only ('gracefully fails on timeout', () => {
             const wixRestaurantsClientWithTimeout = new WixRestaurantsClient({
-                apiUrl : `https://${host}/${version}`,
-                XMLHttpRequest,
+                endpointUrl,
                 timeout: 10
             });
 
-            driver.requestFor({
-                request : someRequest
+            driver.getOrganization({
+                organizationId: someRestaurant.id,
+                fields: allFields
             }).delayBy({
-                ms:1000
+                ms: 1000
             }).succeedWith({
-                response: { value : someValue }
+                value: someRestaurant
             });
-
-            wixRestaurantsClientWithTimeout.request({
-                request : someRequest,
-                callback : response => {
-                    expect(response.error).to.equal('timeout');
-                    expect(response.errorMessage).to.not.be.empty;
-                    done();
-                }
+            
+            return wixRestaurantsClient.getOrganization({
+                organizationId: someRestaurant.id,
+                fields: allFields
+            }).then((organization) => {
+                assert.fail(false, true, 'expected error');
+            }, (error) => {
+                console.log("456: " + error);
+                expect(error.code).to.equal('timeout');
+                expect(error.description).to.not.be.empty;
             });
         });
 
-        it('gracefully fails when network is down', done => {
-            const invalidUrl = 'http://whatever.noexist';
+        it('gracefully fails when network is down', () => {
             const wixRestaurantsClientWithInvalidEndpointUrl = new WixRestaurantsClient({
-                XMLHttpRequest,
-                apiUrl : invalidUrl
+                endpointUrl : invalidEndpointUrl
             });
-
-            wixRestaurantsClientWithInvalidEndpointUrl.request({
-                request : someRequest,
-                callback : response => {
-                    expect(response.error).to.equal('network_down');
-                    expect(response.errorMessage).to.not.be.empty;
-                    done();
-                }
+            
+            return wixRestaurantsClient.getOrganization({
+                organizationId: someRestaurant.id,
+                fields: allFields
+            }).then((organization) => {
+                assert.fail(false, true, 'expected error');
+            }, (error) => {
+                expect(error.code).to.equal('network_down');
+                expect(error.description).to.not.be.empty;
             });
         });
 
-        it('gracefully fails on protocol error', done => {
-            driver.requestFor({
-                request : someRequest
-            }).failWithProtocolError();
-
-            wixRestaurantsClient.request({
-                request : someRequest,
-                callback : response => {
-                    expect(response.error).to.equal('protocol');
-                    expect(response.errorMessage).to.not.be.empty;
-                    done();
-                }
+        it('gracefully fails on protocol error', () => {
+            driver.getOrganization({
+                organizationId: someRestaurant.id,
+                fields: allFields
+            }).failsWithProtocolError();
+            
+            return wixRestaurantsClient.getOrganization({
+                organizationId: someRestaurant.id,
+                fields: allFields
+            }).then((organization) => {
+                assert.fail(false, true, 'expected error');
+            }, (error) => {
+                expect(error.code).to.equal('protocol');
+                expect(error.description).to.not.be.empty;
             });
+        });
+    });
+    
+    describe('getOrganization', () => {
+        it ('successfully returns the organization', () => {
+            driver.getOrganization({
+                organizationId: someRestaurant.id,
+                fields: allFields
+            }).returns({
+                value: someRestaurant
+            });
+
+            return wixRestaurantsClient.getOrganization({
+                organizationId: someRestaurant.id,
+                fields: allFields
+            }).then((organization) => {
+                expect(organization).to.deep.equal(someRestaurant);
+            })
         });
     });
 });
