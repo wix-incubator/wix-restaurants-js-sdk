@@ -5,7 +5,7 @@ Official JavaScript client for the [Wix Restaurants API](http://developers.wixre
 
 This package contains the following modules:
 ## Client
-To use the client, it is perfered to use the derived [openrest4node](https://github.com/wix/openrest4node)
+See usage examples [here](https://github.com/wix/wix-restaurants-js-sdk/wiki)
 
 ## Fixture
 Fixtures let you create Wix Restaurants data structures using functions. Example:
