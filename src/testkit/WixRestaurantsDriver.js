@@ -40,6 +40,26 @@ export default class WixRestaurantsDriver {
         });
     }
 
+    getOrganizationFull({ organizationId, fields = null }) {
+        return this._aRequestFor({
+            request: {
+                type: 'get_organization_full',
+                organizationId,
+                fields
+            }
+        });
+    }
+
+    submitOrder({ accessToken = null, order }) {
+        return this._aRequestFor({
+            request: {
+                type: 'submit_order',
+                accessToken,
+                order
+            }
+        });
+    }
+
     _aRequestFor({ request }) {
         const params = {
             resource : '/',

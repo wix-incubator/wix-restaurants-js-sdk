@@ -20,6 +20,26 @@ export default class WixRestaurantsClient {
         });
     }
 
+    getOrganizationFull({organizationId, fields = null}) {
+        return this._request({
+            request: {
+                type: 'get_organization_full',
+                organizationId,
+                fields
+            }
+        });
+    }
+
+    submitOrder({accessToken = null, order}) {
+        return this._request({
+            request: {
+                type: 'submit_order',
+                accessToken,
+                order
+            }
+        });
+    }
+
     _request({request = {}}) {
         const deferred = Q.defer();
         const xhr = new XMLHttpRequest();
