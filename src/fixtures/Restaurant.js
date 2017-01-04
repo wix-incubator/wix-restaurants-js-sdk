@@ -6,7 +6,7 @@ export default function createRestaurant() {
             id: 'restaurantid',
             timezone: 'Asia/Jerusalem',
             availabilities: {}
-        }
+        };
     }
 
     return {
@@ -33,5 +33,5 @@ export default function createRestaurant() {
         val() {
             return fixture;
         }
-    }
+    };
 }
