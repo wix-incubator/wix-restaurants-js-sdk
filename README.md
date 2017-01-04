@@ -5,7 +5,7 @@ Official JavaScript client for the [Wix Restaurants API](http://developers.wixre
 
 This package contains the following modules:
 ## Client
-See usage examples [here](https://github.com/wix/wix-restaurants-js-sdk/wiki)
+See usage examples [here](https://github.com/wix/wix-restaurants-js-sdk/wiki).
 
 ## Fixture
 Fixtures let you create Wix Restaurants data structures using functions. Example:
