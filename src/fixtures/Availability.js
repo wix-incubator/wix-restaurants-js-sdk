@@ -12,6 +12,11 @@ export default function createAvailability() {
             return this;
         },
 
+        addException({start, end, available}) {
+            fixture.exceptions.push({start, end, available});
+            return this;
+        },
+
         val() {
             return fixture;
         }
