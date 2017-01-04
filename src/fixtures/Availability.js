@@ -1,7 +1,7 @@
 import Time from '../helpers/Time.js';
 
 export default function createAvailability() {
-    let fixture = {weekly: []};
+    let fixture = {weekly: [], exceptions: []};
 
     return {
         addWeeklyFromDate({_Time = Time, start, end}) {
