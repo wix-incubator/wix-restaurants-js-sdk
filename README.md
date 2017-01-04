@@ -4,6 +4,7 @@ Official JavaScript client for the [Wix Restaurants API](http://developers.wixre
 [![NPM version][npm-image]][npm-url] [![Downloads][downloads-image]][npm-url]
 
 This package contains the following modules:
+
 ## Client
 See usage examples [here](https://github.com/wix/wix-restaurants-js-sdk/wiki).
 
