@@ -211,7 +211,9 @@ describe('WixRestaurantsClient', () => {
             driver.submitOrder({
                 order: someNewOrder
             }).succeedWith({
-                value: someOrder
+                value: {
+                    order: someOrder
+                }
             });
 
             return wixRestaurantsClient.submitOrder({

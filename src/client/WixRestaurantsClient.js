@@ -37,7 +37,7 @@ export default class WixRestaurantsClient {
                 accessToken,
                 order
             }
-        });
+        }).then(orderConfirmation => orderConfirmation.order);
     }
 
     _request({request = {}}) {
