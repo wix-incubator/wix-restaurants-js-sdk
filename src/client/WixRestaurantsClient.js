@@ -5,7 +5,7 @@ export const Endpoints = {
 };
 
 export default class WixRestaurantsClient {
-    constructor({ endpointUrl = Endpoints.production, timeout = 0 }) {
+    constructor({ endpointUrl = Endpoints.production, timeout = 0 } = {}) {
         this._endpointUrl = endpointUrl;
         this._timeout = timeout;
     }

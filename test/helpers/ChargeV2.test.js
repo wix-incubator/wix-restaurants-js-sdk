@@ -98,7 +98,7 @@ describe('helpers: ChargesV2', () => {
         it('Correctly calculates the total of a charge', () => {
 
             // Percentage
-            const orderItems = [fixtures.OrderItem().itemId('itemid').price(1000).val()];
+            const orderItems = [fixtures.OrderItem().setItemId('itemid').setPrice(1000).val()];
             const orderCharges = [{chargeId:'aaa', amount:-200}];
 
             const charge1 = fixtures.ChargeV2().id('charge1').percentageDiscount({percentage:10000}).val();
@@ -112,8 +112,8 @@ describe('helpers: ChargesV2', () => {
 
             // Fixed
             const fixedOrderItems = [
-                fixtures.OrderItem().itemId('aaa').price(1000).val(),
-                fixtures.OrderItem().itemId('ccc').price(2000).val()
+                fixtures.OrderItem().setItemId('aaa').setPrice(1000).val(),
+                fixtures.OrderItem().setItemId('ccc').setPrice(2000).val()
             ];
             const fixedCharge = fixtures.ChargeV2().id('charge').fixedDiscount({price:10, itemIds:['aaa', 'bbb', 'ccc']}).val();
             expect(ChargeV2.calculateAmount({charge:fixedCharge, orderItems:fixedOrderItems, orderCharges})).to.equal(-20);

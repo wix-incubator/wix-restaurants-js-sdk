@@ -54,6 +54,7 @@ describe('WixRestaurantsClient', () => {
         code: 'invalid_data',
         description: 'invalid data'
     };
+
     const allFields = null;
 
     const someNewOrder = {

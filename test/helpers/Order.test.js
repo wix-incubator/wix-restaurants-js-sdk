@@ -21,7 +21,7 @@ describe('helpers: Order', () => {
             };
 
             order.orderItems = [
-                fixtures.OrderItem().itemId('itemid').price(1000).val()
+                fixtures.OrderItem().setItemId('itemid').setPrice(1000).val()
             ];
 
             chargesV2 = [

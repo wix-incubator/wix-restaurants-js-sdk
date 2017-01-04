@@ -6,17 +6,17 @@ export default function createOrderItem() {
     }
 
     return {
-        itemId(itemId) {
+        setItemId(itemId) {
             fixture.itemId = itemId;
             return this;
         },
 
-        price(price) {
+        setPrice(price) {
             fixture.price = price;
             return this;
         },
 
-        count(count) {
+        setCount(count) {
             fixture.count = count;
             return this;
         },
