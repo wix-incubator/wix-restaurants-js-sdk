@@ -1,7 +1,6 @@
 import {expect} from 'chai';
 import {helpers} from '../../src/index.js';
 import {fixtures} from '../../src/index.js';
-import moment from 'moment-timezone';
 
 const Order = helpers.Order;
 
@@ -12,15 +11,12 @@ describe('helpers: Order', () => {
             const emptyCharges = Order.getOrderCharges({});
             expect(emptyCharges).to.be.empty;
 
-            let order = {};
             let chargesV2 = [];
 
-            order.delivery = {
-                type: 'takeout',
-                time: moment()
-            };
+            const dispatchType = 'takeout';
+            const dispatchTime = new Date().getTime();
 
-            order.orderItems = [
+            const orderItems = [
                 fixtures.OrderItem().setItemId('itemid').setPrice(1000).val()
             ];
 
@@ -34,29 +30,33 @@ describe('helpers: Order', () => {
                 fixtures.ChargeV2().id('charge7').percentageDiscount({percentage:10000}).val(),
             ];
 
-            const orderCharges = Order.getOrderCharges({order, chargesV2});
+            const orderCharges = Order.getOrderCharges({orderItems, dispatchType, dispatchTime, chargesV2});
             expect(orderCharges).to.deep.equal([
                 {chargeId:'charge1', amount:-100},
                 {chargeId:'charge3', amount:0},
-                {chargeId:'charge4', amount:-0}, /* Apparently chai doesn't thing 0 === -0 */
+                {chargeId:'charge4', amount:-0}, /* Apparently chai doesn't think 0 === -0 */
                 {chargeId:'charge5', amount:-144},
                 {chargeId:'charge6', amount:-180},
                 {chargeId:'charge7', amount:-100},
             ]);
+        });
+    });
 
-            order.delivery = {
-                type: 'takeout',
-                time: new Date().getTime()
-            };
-            const orderCharges2 = Order.getOrderCharges({order, chargesV2});
-            expect(orderCharges2).to.deep.equal([
-                {chargeId:'charge1', amount:-100},
-                {chargeId:'charge3', amount:0},
-                {chargeId:'charge4', amount:-0}, /* Apparently chai doesn't thing 0 === -0 */
-                {chargeId:'charge5', amount:-144},
-                {chargeId:'charge6', amount:-180},
-                {chargeId:'charge7', amount:-100},
-            ]);
+    describe('calculateTotalOrder', () => {
+        it('calculates the total price of an order', () => {
+            const orderCharges = [
+                {amount:100}
+            ];
+
+            const orderItems = [
+                fixtures.OrderItem().setPrice(30).val()
+            ];
+
+            const dispatchCharge = 10;
+
+            const total = Order.calculateTotalOrder({orderItems, orderCharges, dispatchCharge});
+
+            expect(total).to.equal(140);
         });
     });
 });

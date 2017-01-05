@@ -1,21 +1,19 @@
 import _ from 'lodash';
 import moment from 'moment';
 import ChargeV2Helper from './ChargeV2.js';
+import OrderItemHelper from './OrderItem.js';
 
 export default {
 
     /**
      * @return The orderCharges (ChargesV2) that should be added to the order
      */
-    getOrderCharges:function({order, chargesV2, timezone}) {
+    getOrderCharges:function({dispatchType, dispatchTime, orderItems, source, platform, chargesV2, timezone}) {
 
         let orderCharges = [];
         let prevOrderCharges = [];
 
-        let deliveryTime = _.get(order, 'delivery.time') || moment();
-        if ((timezone) && (_.isNumber(deliveryTime))) {
-            deliveryTime = moment(deliveryTime).tz(timezone);
-        }
+        const _dispatchTime = moment(dispatchTime).tz(timezone);
 
         do {
             prevOrderCharges = orderCharges;
@@ -24,11 +22,11 @@ export default {
 
                 const isApplicable = ChargeV2Helper.isApplicable({
                     charge          : charge,
-                    deliveryTime    : deliveryTime,
-                    deliveryType    : order.delivery.type,
-                    orderItems      : order.orderItems,
-                    source          : order.source,
-                    platform        : order.platform
+                    deliveryTime    : _dispatchTime,
+                    deliveryType    : dispatchType,
+                    orderItems      : orderItems,
+                    source          : source,
+                    platform        : platform
                 });
 
                 if (!isApplicable) {
@@ -42,11 +40,11 @@ export default {
                         chargeId:charge.id,
                         amount:ChargeV2Helper.calculateAmount({
                             charge          : charge,
-                            deliveryTime    : deliveryTime,
-                            deliveryType    : order.delivery.type,
-                            source          : order.source,
-                            platform        : order.platform,
-                            orderItems      : order.orderItems,
+                            deliveryTime    : _dispatchTime,
+                            deliveryType    : dispatchType,
+                            source          : source,
+                            platform        : platform,
+                            orderItems      : orderItems,
                             orderCharges    : orderCharges
                         })
                     };
@@ -59,5 +57,14 @@ export default {
         } while (!_.isEqual(orderCharges, prevOrderCharges));
 
         return orderCharges;
+    },
+
+    calculateTotalOrder:function({orderItems, orderCharges, dispatchCharge = 0}) {
+        var price = dispatchCharge;
+
+        _.each(orderItems, (orderItem) => price += OrderItemHelper.getTotalPrice({orderItem}));
+        _.each(orderCharges, (orderCharge) => price += orderCharge.amount);
+
+        return price;
     }
 };

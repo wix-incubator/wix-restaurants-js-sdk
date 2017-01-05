@@ -2,14 +2,7 @@ export default function createOrder() {
     let fixture = init();
 
     function init() {
-        return {
-            delivery: {},
-        };
-    }
-
-    function deleteFutureOrderGuarantee() {
-        if (fixture.delivery.timeGuarantee === "about")
-            delete fixture.delivery.timeGuarantee;
+        return {};
     }
 
     return {
@@ -23,6 +16,11 @@ export default function createOrder() {
             return this;
         },
 
+        setCurrency(currency) {
+            fixture.currency = currency;
+            return this;
+        },
+
         setContact(contact) {
             fixture.contact = contact;
             return this;
@@ -33,23 +31,18 @@ export default function createOrder() {
             return this;
         },
 
-        setFutureOrder() {
-            fixture.delivery.timeGuarantee = "about";
+        setReceived(received) {
+            fixture.received = received;
             return this;
         },
 
-        setAsap(received) {
-            deleteFutureOrderGuarantee();
-
-            if (received !== undefined && received !== null)
-                fixture.received = received;
-
+        setOrderItems(orderItems) {
+            fixture.orderItems = orderItems;
             return this;
         },
 
-        addOrderItem(orderItem) {
-            fixture.orderItems = fixture.orderItems || [];
-            fixture.orderItems.push(orderItem);
+        setOrderCharges(orderCharges) {
+            fixture.orderCharges = orderCharges;
             return this;
         },
 
@@ -59,13 +52,8 @@ export default function createOrder() {
             return this;
         },
 
-        setDelivery() {
-            fixture.delivery.type = 'delivery';
-            return this;
-        },
-
-        setPickup() {
-            fixture.delivery.type = 'takeout';
+        setDispatch(dispatch) {
+            fixture.delivery = dispatch;
             return this;
         },
 
@@ -84,8 +72,19 @@ export default function createOrder() {
             return this;
         },
 
-        setDeliveryTime(timestamp) {
-            fixture.delivery.time = timestamp;
+        addPayment(payment) {
+            fixture.payments = fixture.payments || [];
+            fixture.payments.push(payment);
+            return this;
+        },
+
+        setComment(comment) {
+            fixture.comment = comment;
+            return this;
+        },
+
+        setDeveloperId(developerId) {
+            fixture.developerId = developerId;
             return this;
         },
 
@@ -94,9 +93,8 @@ export default function createOrder() {
             return this;
         },
 
-        addCashPayment(amount) {
-            fixture.payments = fixture.payments || [];
-            fixture.payments.push({type:'cash', amount});
+        setSource(source) {
+            fixture.source = source;
             return this;
         },
 
