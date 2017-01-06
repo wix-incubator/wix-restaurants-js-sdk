@@ -11,7 +11,7 @@ export default function createPlatform() {
             fixture = 'mobileweb';
             return this;
         },
-        
+
         setMessenger() {
             fixture = 'com.messenger';
             return this;
