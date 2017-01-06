@@ -11,6 +11,21 @@ export default function createPlatform() {
             fixture = 'mobileweb';
             return this;
         },
+        
+        setMessenger() {
+            fixture = 'com.messenger';
+            return this;
+        },
+
+        setTelegram() {
+            fixture = 'com.telegram';
+            return this;
+        },
+
+        setSlack() {
+            fixture = 'com.slack';
+            return this;
+        },
 
         val() {
             return fixture;
