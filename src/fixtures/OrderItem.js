@@ -21,6 +21,11 @@ export default function createOrderItem() {
             return this;
         },
 
+        setComment(comment) {
+            fixture.comment = comment;
+            return this;
+        },
+
         val() {
             return fixture;
         }
