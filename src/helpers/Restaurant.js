@@ -30,6 +30,6 @@ export default {
             cal: reservationTimeCal.clone()
         });
 
-        return {...it.next(), isPast: diff < 0, isEarly, isLate};
+        return _.extend({}, it.next(), {isPast: diff < 0, isEarly, isLate});
     },
 };
