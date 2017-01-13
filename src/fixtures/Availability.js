@@ -12,8 +12,14 @@ export default function createAvailability() {
             return this;
         },
 
-        addException({start, end, available}) {
-            fixture.exceptions.push({start, end, available});
+        addWeeklyFromMinuteOfWeek({start, end}) {
+            let duration = end - start;
+            fixture.weekly.push({minuteOfWeek: start, durationMins: duration});
+            return this;
+        },
+
+        addException({start, end, available, reason, comment}) {
+            fixture.exceptions.push({start, end, available, reason, comment});
             return this;
         },
 

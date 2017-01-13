@@ -24,9 +24,19 @@ export default function createRestaurant() {
             return this;
         },
 
+        setOpenTimes({availability}) {
+            fixture.openTimes = availability;
+            return this;
+        },
+
         addAvailabilityType({type, availability}) {
             fixture.availabilities[type] = availability;
 
+            return this;
+        },
+
+        setReservations({reservations}) {
+            fixture.reservations = reservations;
             return this;
         },
 

@@ -4,5 +4,6 @@ import OrderItem from './OrderItem';
 import Order from './Order';
 import Time from './Time';
 import Image from './Image';
+import Restaurant from './Restaurant';
 
-export { Charge, ChargeV2, OrderItem, Order, Time, Image };
+export { Charge, ChargeV2, OrderItem, Order, Time, Image, Restaurant };

@@ -8,5 +8,6 @@ import Payment from './Payment.js';
 import Contact from './Contact.js';
 import Order from './Order.js';
 import Platform from './Platform.js';
+import ReservationsInfo from './ReservationsInfo.js';
 
-export {Availability, ChargeV2, OrderItem, Reservation, Restaurant, Dispatch, Payment, Contact, Order, Platform};
+export {Availability, ChargeV2, OrderItem, Reservation, Restaurant, Dispatch, Payment, Contact, Order, Platform, ReservationsInfo};
