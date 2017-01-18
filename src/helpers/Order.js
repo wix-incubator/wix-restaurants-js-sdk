@@ -66,5 +66,10 @@ export default {
         _.each(orderCharges, (orderCharge) => price += orderCharge.amount);
 
         return price;
+    },
+
+    sumTaxCharges:function({chargesV2, orderCharges}) {
+        const taxOrderCharges = _.filter(orderCharges, orderCharge => (_.find(chargesV2, c => c.id === orderCharge.chargeId)).type === 'tax');
+        return _.sumBy(taxOrderCharges, 'amount') || 0;
     }
 };

@@ -32,12 +32,12 @@ describe('helpers: Order', () => {
 
             const orderCharges = Order.getOrderCharges({orderItems, dispatchType, dispatchTime, chargesV2});
             expect(orderCharges).to.deep.equal([
-                {chargeId:'charge1', amount:-100},
-                {chargeId:'charge3', amount:0},
-                {chargeId:'charge4', amount:-0}, /* Apparently chai doesn't think 0 === -0 */
-                {chargeId:'charge5', amount:-144},
-                {chargeId:'charge6', amount:-180},
-                {chargeId:'charge7', amount:-100},
+                fixtures.OrderCharge().setChargeId('charge1').setAmount(-100).val(),
+                fixtures.OrderCharge().setChargeId('charge3').setAmount(0).val(),
+                fixtures.OrderCharge().setChargeId('charge4').setAmount(-0).val(), /* Apparently chai doesn't think 0 === -0 */
+                fixtures.OrderCharge().setChargeId('charge5').setAmount(-144).val(),
+                fixtures.OrderCharge().setChargeId('charge6').setAmount(-180).val(),
+                fixtures.OrderCharge().setChargeId('charge7').setAmount(-100).val(),
             ]);
         });
     });
@@ -58,5 +58,23 @@ describe('helpers: Order', () => {
 
             expect(total).to.equal(140);
         });
+    });
+
+    describe('sumTaxCharges', () => {
+        const chargesV2 = [
+            fixtures.ChargeV2().id('charge1').tax(10).val(),
+            fixtures.ChargeV2().id('charge2').tax(20).val(),
+            fixtures.ChargeV2().id('charge3').percentageDiscount({percentage:10000}).val()
+        ];
+
+        const orderCharges = [
+            fixtures.OrderCharge().setChargeId('charge1').setAmount(1000).val(),
+            fixtures.OrderCharge().setChargeId('charge2').setAmount(2000).val(),
+            fixtures.OrderCharge().setChargeId('charge3').setAmount(5000).val()
+        ];
+
+        const total = Order.sumTaxCharges({chargesV2, orderCharges});
+
+        expect(total).to.equal(3000);
     });
 });
