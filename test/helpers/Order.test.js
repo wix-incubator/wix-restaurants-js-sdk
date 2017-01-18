@@ -61,20 +61,28 @@ describe('helpers: Order', () => {
     });
 
     describe('sumTaxCharges', () => {
-        const chargesV2 = [
-            fixtures.ChargeV2().id('charge1').tax(10).val(),
-            fixtures.ChargeV2().id('charge2').tax(20).val(),
-            fixtures.ChargeV2().id('charge3').percentageDiscount({percentage:10000}).val()
-        ];
+        it('calculates order\'s tax', () => {
+            const chargesV2 = [
+                fixtures.ChargeV2().id('charge1').tax(10).val(),
+                fixtures.ChargeV2().id('charge2').tax(20).val(),
+                fixtures.ChargeV2().id('charge3').percentageDiscount({percentage:10000}).val()
+            ];
 
-        const orderCharges = [
-            fixtures.OrderCharge().setChargeId('charge1').setAmount(1000).val(),
-            fixtures.OrderCharge().setChargeId('charge2').setAmount(2000).val(),
-            fixtures.OrderCharge().setChargeId('charge3').setAmount(5000).val()
-        ];
+            const orderCharges = [
+                fixtures.OrderCharge().setChargeId('charge1').setAmount(1000).val(),
+                fixtures.OrderCharge().setChargeId('charge2').setAmount(2000).val(),
+                fixtures.OrderCharge().setChargeId('charge3').setAmount(5000).val()
+            ];
 
-        const total = Order.sumTaxCharges({chargesV2, orderCharges});
+            const total = Order.sumTaxCharges({chargesV2, orderCharges});
 
-        expect(total).to.equal(3000);
+            expect(total).to.equal(3000);
+        });
+
+        it('returns null if restaurant doesn\'t charge taxes', () => {
+            const total = Order.sumTaxCharges({chargeV2: [], orderCharges: []});
+
+            expect(total).to.equal(null);
+        });
     });
 });

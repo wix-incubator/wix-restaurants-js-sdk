@@ -69,6 +69,8 @@ export default {
     },
 
     sumTaxCharges:function({chargesV2, orderCharges}) {
+        if (!_.find(chargesV2, charge => charge.type === 'tax')) return null;
+
         const taxOrderCharges = _.filter(orderCharges, orderCharge => (_.find(chargesV2, c => c.id === orderCharge.chargeId)).type === 'tax');
         return _.sumBy(taxOrderCharges, 'amount') || 0;
     }
