@@ -10,5 +10,6 @@ import Contact from './Contact.js';
 import Order from './Order.js';
 import Platform from './Platform.js';
 import ReservationsInfo from './ReservationsInfo.js';
+import Menu from './Menu.js';
 
-export {Availability, ChargeV2, OrderCharge, OrderItem, Reservation, Restaurant, Dispatch, Payment, Contact, Order, Platform, ReservationsInfo};
+export {Availability, ChargeV2, OrderCharge, OrderItem, Reservation, Restaurant, Dispatch, Payment, Contact, Order, Platform, ReservationsInfo, Menu};

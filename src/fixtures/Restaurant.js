@@ -40,6 +40,16 @@ export default function createRestaurant() {
             return this;
         },
 
+        activateFutureOrders(maxDelayMins = 1440){
+            fixture.maxFutureOrderDelayMins = maxDelayMins;
+            return this;
+        },
+
+        disableFutureOrders() {
+            fixture.maxFutureOrderDelayMins = 0;
+            return this;
+        },
+
         val() {
             return fixture;
         }
