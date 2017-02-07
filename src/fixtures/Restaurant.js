@@ -38,7 +38,7 @@ export default function createRestaurant() {
         setOrders({orders}) {
             fixture.orders = orders;
             return this;
-        }
+        },
 
         setReservations({reservations}) {
             fixture.reservations = reservations;
