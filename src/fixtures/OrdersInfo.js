@@ -3,8 +3,6 @@ export default function createOrdersInfo() {
 
     function init() {
         return {
-            id: 'restaurantid',
-            timezone: 'Asia/Jerusalem',
             availabilities: {}
         };
     }
