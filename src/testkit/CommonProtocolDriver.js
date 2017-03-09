@@ -53,3 +53,5 @@ export class CommonProtocolDriver {
         });
     }
 }
+
+export default CommonProtocolDriver;
