@@ -1,9 +1,9 @@
-import nock from 'nock';
 import _ from 'lodash';
 
 class NockProtocolDriver {
 
-    constructor({url, version}) {
+    constructor({nock, url, version}) {
+        this.nock = nock;
         this.url = url || 'https://api.wixrestaurants.com';
         this.version = version || 'v1.1';
     }
@@ -12,11 +12,11 @@ class NockProtocolDriver {
     }
 
     reset() {
-        nock.cleanAll();
+        this.nock.cleanAll();
     }
 
     stop() {
-        nock.cleanAll();
+        this.nock.cleanAll();
     }
 
     addRule({request, delay, response, useRawResponse}) {
@@ -39,7 +39,7 @@ class NockProtocolDriver {
             }
         };
 
-        nock(this.url)
+        this.nock(this.url)
             .post('/' + this.version)
             .socketDelay(delay || 0)
             .delay(delay || 0)

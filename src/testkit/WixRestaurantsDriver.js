@@ -1,6 +1,3 @@
-import {CommonProtocolDriver} from './CommonProtocolDriver';
-import NockProtocolDriver from './NockProtocolDriver';
-
 export default class WixRestaurantsDriver {
 
     /**
@@ -8,14 +5,8 @@ export default class WixRestaurantsDriver {
      *      'localNetwork' uses a network mock. the params should include [port].
      *      'nock' users nock. the params should include [url].
      */
-    constructor({ type, params }) {
-
-        const drivers = {
-            'localNetwork': CommonProtocolDriver,
-            'nock': NockProtocolDriver
-        };
-
-        this._driver = new drivers[type](params);
+    constructor({ driver }) {
+        this._driver = driver;
     }
 
     start() {

@@ -1,8 +1,9 @@
 import { assert, expect }         from 'chai';
 import { XMLHttpRequest } from 'xhr2';
 import {WixRestaurantsClient} from '../../src/index';
-import {WixRestaurantsDriver} from '../../src/testkit';
+import {testkit} from '../../src/index';
 import _ from 'lodash';
+import nock from 'nock';
 
 global.XMLHttpRequest = XMLHttpRequest;
 
@@ -12,13 +13,7 @@ describe('WixRestaurantsClient', () => {
     const endpointUrl = `${url}/${version}`;
     const invalidEndpointUrl = 'http://whatever.noexist';
     const wixRestaurantsClient = new WixRestaurantsClient({endpointUrl});
-    const driver = new WixRestaurantsDriver({
-        type: 'nock',
-        params: {
-            url,
-            version
-        }
-    });
+    const driver = new testkit.WixRestaurantsDriver({driver:new testkit.NockProtocolDriver({nock, url, version})});
 
     before(() => {
         driver.start();
