@@ -1,8 +1,7 @@
-import http from 'http';
 import _ from 'lodash';
 
 export class CommonProtocolDriver {
-    constructor({port}) {
+    constructor({port, http}) {
         this._server = http.createServer(this._handler.bind(this));
         this._port = port;
         this.reset();
