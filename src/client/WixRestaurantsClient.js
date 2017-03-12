@@ -40,6 +40,16 @@ export default class WixRestaurantsClient {
         }).then(orderConfirmation => orderConfirmation.order);
     }
 
+    getRole({accessToken, organizationId}) {
+        return this._request({
+            request: {
+                type: 'get_role',
+                accessToken,
+                organizationId
+            }
+        });
+    }
+
     _request({request = {}}) {
         const deferred = Q.defer();
         const xhr = new XMLHttpRequest();

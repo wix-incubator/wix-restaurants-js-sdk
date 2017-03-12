@@ -85,6 +85,8 @@ describe('WixRestaurantsClient', () => {
         modified: now
     });
 
+    const someAccessToken = 'some-access-token';
+
     // Applies to all requests, using getOrganization just for example
     describe('any method', () => {
         it ('gracefully fails on error', () => {
@@ -215,6 +217,32 @@ describe('WixRestaurantsClient', () => {
                 order: someNewOrder
             }).then((order) => {
                 expect(order).to.deep.equal(someOrder);
+            });
+        });
+    });
+
+    describe('getRole', () => {
+        it('returns a user\'s role in an organization', () => {
+            const someRole = 'manager';
+
+            driver.getRole({
+                accessToken: someAccessToken,
+                organizationId: someRestaurant.id
+            }).succeedWith({
+                value: {
+                    organizationId: someRestaurant.id,
+                    organizationType: someRestaurant.type,
+                    role: someRole
+                }
+            });
+
+            return wixRestaurantsClient.getRole({
+                accessToken: someAccessToken,
+                organizationId: someRestaurant.id
+            }).then((role) => {
+                expect(role.organizationId).to.equal(someRestaurant.id);
+                expect(role.organizationType).to.equal(someRestaurant.type);
+                expect(role.role).to.equal(someRole);
             });
         });
     });

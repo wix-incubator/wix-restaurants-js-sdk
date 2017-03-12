@@ -51,6 +51,16 @@ export default class WixRestaurantsDriver {
         });
     }
 
+    getRole({ accessToken, organizationId }) {
+        return this._aRequestFor({
+            request: {
+                type: 'get_role',
+                accessToken,
+                organizationId
+            }
+        });
+    }
+
     _aRequestFor({ request }) {
         const params = {
             resource : '/',
