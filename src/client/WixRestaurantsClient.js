@@ -30,6 +30,16 @@ export default class WixRestaurantsClient {
         });
     }
 
+    setOrganization({organization, accessToken}) {
+        return this._request({
+            request: {
+                type: 'set_organization',
+                organization,
+                accessToken
+            }
+        });
+    }
+
     submitOrder({accessToken = null, order}) {
         return this._request({
             request: {
