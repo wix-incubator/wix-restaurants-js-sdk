@@ -83,8 +83,9 @@ export default class WixRestaurantsDriver {
                 return _this;
             },
 
-            succeedWith: ({value}) => {
-                params.response = {value};
+            succeedWith: (response) => {
+                // response can be an object with {value:...}, or a function
+                params.response = response;
 
                 this._driver.addRule(params);
             },
