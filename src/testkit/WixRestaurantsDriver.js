@@ -41,6 +41,16 @@ export default class WixRestaurantsDriver {
         });
     }
 
+    setOrganization({ organization, accessToken }) {
+        return this._aRequestFor({
+            request: {
+                type: 'set_organization',
+                organization,
+                accessToken
+            }
+        });
+    }
+
     submitOrder({ accessToken = null, order }) {
         return this._aRequestFor({
             request: {
