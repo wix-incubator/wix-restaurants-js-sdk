@@ -1,10 +1,4 @@
 export default class WixRestaurantsDriver {
-
-    /**
-     * Type can be:
-     *      'localNetwork' uses a network mock. the params should include [port].
-     *      'nock' users nock. the params should include [url].
-     */
     constructor({ driver }) {
         this._driver = driver;
     }
