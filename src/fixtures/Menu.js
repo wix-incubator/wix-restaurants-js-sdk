@@ -1,4 +1,4 @@
-export default function createOrderItem() {
+export default function createMenu() {
     let fixture = init();
 
     function init() {
