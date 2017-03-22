@@ -5,9 +5,10 @@ export const Endpoints = {
 };
 
 export default class WixRestaurantsClient {
-    constructor({ endpointUrl = Endpoints.production, timeout = 0 } = {}) {
+    constructor({ endpointUrl = Endpoints.production, timeout = 0, xmlhttprequest } = {}) {
         this._endpointUrl = endpointUrl;
         this._timeout = timeout;
+        this._xmlhttprequest = xmlhttprequest;
     }
 
     getOrganization({organizationId, fields = null}) {
@@ -62,7 +63,7 @@ export default class WixRestaurantsClient {
 
     _request({request = {}}) {
         const deferred = Q.defer();
-        const xhr = new XMLHttpRequest();
+        const xhr = this._xmlhttprequest ? new this._xmlhttprequest() : new XMLHttpRequest();
 
         xhr.ontimeout = () => {
             deferred.reject({

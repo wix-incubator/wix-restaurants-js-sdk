@@ -4,9 +4,15 @@ import {testkit} from '../../src/index';
 
 const {CommonProtocolDriver} = testkit;
 
-global.XMLHttpRequest = XMLHttpRequest;
-
 describe('CommonProtocolDriver', () => {
+    before(() => {
+        global.XMLHttpRequest = XMLHttpRequest;
+    });
+
+    after(() => {
+        global.XMLHttpRequest = null;
+    });
+
     it('is exported', () => {
         expect(CommonProtocolDriver).to.be.ok;
 
