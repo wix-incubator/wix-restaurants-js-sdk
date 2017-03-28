@@ -1,120 +1,120 @@
 import Q from 'q';
+import axios from 'axios';
 
 export const Endpoints = {
     production: 'https://api.wixrestaurants.com/v1.1'
 };
 
-export default class WixRestaurantsClient {
-    constructor({ endpointUrl = Endpoints.production, timeout = 0, xmlhttprequest } = {}) {
-        this._endpointUrl = endpointUrl;
-        this._timeout = timeout;
-        this._xmlhttprequest = xmlhttprequest;
-    }
-
-    getOrganization({organizationId, fields = null}) {
-        return this._request({
-            request: {
-                type: 'get_organization',
-                organizationId,
-                fields
+const parseSuccess = (response) => {
+    if (response.data) {
+        if (response.data.error) {
+            return Q.reject({
+                error: {
+                    code: response.data.error,
+                    description: response.data.errorMessage
+                }
+            });
+        } else if (response.data.value) {
+            return Q.resolve(response.data.value);
+        } else {
+            return Q.reject({
+                error: {
+                    code: 'protocol',
+                    description: 'protocol error'
+                }
+            });
+        }
+    } else {
+        return Q.reject({
+            error: {
+                code: 'protocol',
+                description: 'protocol error'
             }
         });
     }
+};
 
-    getOrganizationFull({organizationId, fields = null}) {
-        return this._request({
-            request: {
-                type: 'get_organization_full',
-                organizationId,
-                fields
+const parseError = (error) => {
+    if (error.response) {
+        return Q.reject({
+            error: {
+                code: 'protocol',
+                description: 'protocol error'
             }
         });
-    }
-
-    setOrganization({organization, accessToken}) {
-        return this._request({
-            request: {
-                type: 'set_organization',
-                organization,
-                accessToken
-            }
-        });
-    }
-
-    submitOrder({accessToken = null, order}) {
-        return this._request({
-            request: {
-                type: 'submit_order',
-                accessToken,
-                order
-            }
-        }).then(orderConfirmation => orderConfirmation.order);
-    }
-
-    getRole({accessToken, organizationId}) {
-        return this._request({
-            request: {
-                type: 'get_role',
-                accessToken,
-                organizationId
-            }
-        });
-    }
-
-    _request({request = {}}) {
-        const deferred = Q.defer();
-        const xhr = this._xmlhttprequest ? new this._xmlhttprequest() : new XMLHttpRequest();
-
-        xhr.ontimeout = () => {
-            deferred.reject({
+    } else {
+        switch(error.code) {
+        case 'ECONNABORTED':
+            return Q.reject({
                 error: {
                     code: 'timeout',
                     description: 'request timed out'
                 }
             });
-        };
-
-        xhr.onerror = () => {
-            deferred.reject({
+        case 'ENOTFOUND': // fall through
+        default:
+            return Q.reject({
                 error: {
                     code: 'network_down',
                     description: 'network is down'
                 }
             });
-        };
+        }
+    }
+};
 
-        xhr.onload = () => {
-            let response = null;
-            try {
-                response = JSON.parse(xhr.responseText);
-            } catch (e) {
-                deferred.reject({
-                    error: {
-                        code: 'protocol',
-                        description: 'protocol error'
-                    }
-                });
-                return;
+export default class WixRestaurantsClient {
+    constructor({ endpointUrl = Endpoints.production, timeout = 0 } = {}) {
+        this._endpointUrl = endpointUrl;
+        this._axios = axios.create({
+            timeout,
+            headers: {
+                'content-type': 'application/json'
             }
+        });
+    }
 
-            if (response.error) {
-                deferred.reject({
-                    error: {
-                        code: response.error,
-                        description: response.errorMessage
-                    }
-                });
-            } else {
-                deferred.resolve(response.value);
-            }
-        };
+    getOrganization({organizationId, fields = null}) {
+        return this._request({
+            type: 'get_organization',
+            organizationId,
+            fields
+        });
+    }
 
-        xhr.open('POST', this._endpointUrl, true);
-        xhr.timeout = this._timeout;
-        xhr.setRequestHeader('Accept', 'application/json');
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.send(JSON.stringify(request));
+    getOrganizationFull({organizationId, fields = null}) {
+        return this._request({
+            type: 'get_organization_full',
+            organizationId,
+            fields
+        });
+    }
 
-        return deferred.promise;
+    setOrganization({organization, accessToken}) {
+        return this._request({
+            type: 'set_organization',
+            organization,
+            accessToken
+        });
+    }
+
+    submitOrder({accessToken = null, order}) {
+        return this._request({
+            type: 'submit_order',
+            accessToken,
+            order
+        }).then(orderConfirmation => orderConfirmation.order);
+    }
+
+    getRole({accessToken, organizationId}) {
+        return this._request({
+            type: 'get_role',
+            accessToken,
+            organizationId
+        });
+    }
+
+    _request(request = {}) {
+        return this._axios.post(this._endpointUrl, request).then(parseSuccess, parseError);
     }
 }

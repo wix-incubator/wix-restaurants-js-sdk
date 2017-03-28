@@ -1,5 +1,4 @@
 import { assert, expect }         from 'chai';
-import { XMLHttpRequest } from 'xhr2';
 import {WixRestaurantsClient} from '../../src/index';
 import {testkit} from '../../src/index';
 import _ from 'lodash';
@@ -10,7 +9,7 @@ describe('WixRestaurantsClient', () => {
     const version = 'v1.1';
     const endpointUrl = `${url}/${version}`;
     const invalidEndpointUrl = 'http://whatever.noexist';
-    const wixRestaurantsClient = new WixRestaurantsClient({endpointUrl, xmlhttprequest:XMLHttpRequest});
+    const wixRestaurantsClient = new WixRestaurantsClient({endpointUrl});
     const driver = new testkit.WixRestaurantsDriver({driver:new testkit.NockProtocolDriver({nock, url, version})});
 
     before(() => {
@@ -108,8 +107,7 @@ describe('WixRestaurantsClient', () => {
         it('gracefully fails on timeout', () => {
             const wixRestaurantsClientWithTimeout = new WixRestaurantsClient({
                 endpointUrl,
-                timeout: 10,
-                xmlhttprequest: XMLHttpRequest
+                timeout: 10
             });
 
             driver.getOrganization({
@@ -134,8 +132,7 @@ describe('WixRestaurantsClient', () => {
 
         it('gracefully fails when network is down', () => {
             const wixRestaurantsClientWithInvalidEndpointUrl = new WixRestaurantsClient({
-                endpointUrl : invalidEndpointUrl,
-                xmlhttprequest: XMLHttpRequest
+                endpointUrl : invalidEndpointUrl
             });
 
             return wixRestaurantsClientWithInvalidEndpointUrl.getOrganization({
