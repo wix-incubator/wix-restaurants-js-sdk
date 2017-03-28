@@ -40,7 +40,7 @@ class NockProtocolDriver {
         };
 
         this.nock(this.url)
-            .post('/' + this.version)
+            .post(`/${this.version}`)
             .socketDelay(delay || 0)
             .delay(delay || 0)
             .times(-1)
