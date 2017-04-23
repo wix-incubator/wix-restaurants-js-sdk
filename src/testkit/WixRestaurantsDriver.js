@@ -1,18 +1,20 @@
+import _ from 'lodash';
+
 export default class WixRestaurantsDriver {
-    constructor({ driver }) {
-        this._driver = driver;
+    constructor({ nockable }) {
+        this._nockable = nockable;
     }
 
     start() {
-        this._driver.start();
+        return this._nockable.start();
     }
 
     stop() {
-        this._driver.stop();
+        return this._nockable.stop();
     }
 
     reset() {
-        this._driver.reset();
+        return this._nockable.reset();
     }
 
     getOrganization({ organizationId, fields = null }) {
@@ -81,24 +83,54 @@ export default class WixRestaurantsDriver {
                 // response can be an object with {value:...}, or a function
                 params.response = response;
 
-                this._driver.addRule(params);
+                this._addRule(params);
             },
 
             failWith: ({ code, description }) => {
                 params.response = {error: code, errorMessage: description};
                 params.error = true;
 
-                this._driver.addRule(params);
+                this._addRule(params);
             },
 
             failWithProtocolError: () => {
                 params.response = '<html></html>';
                 params.useRawResponse = true;
 
-                this._driver.addRule(params);
+                this._addRule(params);
             }
         };
 
         return _this;
+    }
+
+    _addRule({request, delay = 0, response, useRawResponse}) {
+        const shouldHandle = (body) => {
+            if (typeof(request) === 'function') {
+                return request(body);
+            } else {
+                return _.isEqual(request, body);
+            }
+        };
+
+        const respond = (body) => {
+            if (typeof(response) === 'function') {
+                return response(body);
+            } if (useRawResponse) {
+                return [200, response];
+            } else {
+                return [200, JSON.stringify(response)];
+            }
+        };
+
+        this._nockable.nock.post('')
+            .socketDelay(delay)
+            .delay(delay)
+            .times(-1)
+            .reply((uri, body) => {
+                if (shouldHandle(body)) {
+                    return respond(body);
+                }
+            });
     }
 }

@@ -2,26 +2,24 @@ import { assert, expect }         from 'chai';
 import {WixRestaurantsClient} from '../../src/index';
 import {testkit} from '../../src/index';
 import _ from 'lodash';
-import nock from 'nock';
+import { NockNockable } from 'nockable';
 
 describe('WixRestaurantsClient', () => {
-    const url = 'http://www.example.org';
-    const version = 'v1.1';
-    const endpointUrl = `${url}/${version}`;
+    const nockable = new NockNockable({endpoint: 'http://localhost/v1.1'});
     const invalidEndpointUrl = 'http://whatever.noexist';
-    const wixRestaurantsClient = new WixRestaurantsClient({endpointUrl});
-    const driver = new testkit.WixRestaurantsDriver({driver:new testkit.NockProtocolDriver({nock, url, version})});
+    const wixRestaurantsClient = new WixRestaurantsClient({endpointUrl: nockable.endpoint});
+    const driver = new testkit.WixRestaurantsDriver({nockable});
 
     before(() => {
-        driver.start();
+        return driver.start();
     });
 
     after(() => {
-        driver.stop();
+        return driver.stop();
     });
 
     beforeEach(() => {
-        driver.reset();
+        return driver.reset();
     });
 
     const someRestaurant = {
@@ -106,7 +104,7 @@ describe('WixRestaurantsClient', () => {
 
         it('gracefully fails on timeout', () => {
             const wixRestaurantsClientWithTimeout = new WixRestaurantsClient({
-                endpointUrl,
+                endpointUrl: nockable.endpoint,
                 timeout: 10
             });
 
