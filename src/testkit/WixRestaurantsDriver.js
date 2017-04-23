@@ -1,8 +1,16 @@
-import _ from 'lodash';
+import url from 'url';
 
 export default class WixRestaurantsDriver {
     constructor({ nockable }) {
         this._nockable = nockable;
+
+        const urlParts = url.parse(nockable.endpoint);
+        this._hostname = `${urlParts.protocol}//${urlParts.host}`;
+        if (urlParts.pathname[urlParts.pathname.length-1] !== '/') {
+            this._basePath = urlParts.pathname;
+        } else {
+            this._basePath = urlParts.pathname.substr(0, urlParts.pathname.length-1);
+        }
     }
 
     start() {
@@ -69,7 +77,6 @@ export default class WixRestaurantsDriver {
 
     _aRequestFor({ request }) {
         const params = {
-            resource : '/',
             request
         };
 
@@ -95,7 +102,6 @@ export default class WixRestaurantsDriver {
 
             failWithProtocolError: () => {
                 params.response = '<html></html>';
-                params.useRawResponse = true;
 
                 this._addRule(params);
             }
@@ -104,33 +110,10 @@ export default class WixRestaurantsDriver {
         return _this;
     }
 
-    _addRule({request, delay = 0, response, useRawResponse}) {
-        const shouldHandle = (body) => {
-            if (typeof(request) === 'function') {
-                return request(body);
-            } else {
-                return _.isEqual(request, body);
-            }
-        };
-
-        const respond = (body) => {
-            if (typeof(response) === 'function') {
-                return response(body);
-            } if (useRawResponse) {
-                return [200, response];
-            } else {
-                return [200, JSON.stringify(response)];
-            }
-        };
-
-        this._nockable.nock.post('')
-            .socketDelay(delay)
-            .delay(delay)
+    _addRule({request, delay = 0, response}) {
+        this._nockable.nock.post(this._basePath, request)
+            .delayConnection(delay)
             .times(-1)
-            .reply((uri, body) => {
-                if (shouldHandle(body)) {
-                    return respond(body);
-                }
-            });
+            .reply(200, response);
     }
 }
