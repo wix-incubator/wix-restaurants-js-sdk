@@ -2,10 +2,10 @@ import { assert, expect }         from 'chai';
 import {WixRestaurantsClient} from '../../src/index';
 import {testkit} from '../../src/index';
 import _ from 'lodash';
-import { RealnockNockable } from 'nockable';
+import { NockNockable } from 'nockable';
 
 describe('WixRestaurantsClient', () => {
-    const nockable = new RealnockNockable({port: 10010});
+    const nockable = new NockNockable({endpoint: 'https://api.wixrestaurants.com/v1.1'});
     const invalidEndpointUrl = 'http://whatever.noexist';
     const wixRestaurantsClient = new WixRestaurantsClient({endpointUrl: nockable.endpoint});
     const driver = new testkit.WixRestaurantsDriver({nockable});

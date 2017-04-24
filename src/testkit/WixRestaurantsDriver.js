@@ -1,16 +1,6 @@
-import url from 'url';
-
 export default class WixRestaurantsDriver {
     constructor({ nockable }) {
         this._nockable = nockable;
-
-        const urlParts = url.parse(nockable.endpoint);
-        this._hostname = `${urlParts.protocol}//${urlParts.host}`;
-        if (urlParts.pathname[urlParts.pathname.length-1] !== '/') {
-            this._basePath = urlParts.pathname;
-        } else {
-            this._basePath = urlParts.pathname.substr(0, urlParts.pathname.length-1);
-        }
     }
 
     start() {
@@ -111,7 +101,7 @@ export default class WixRestaurantsDriver {
     }
 
     _addRule({request, delay = 0, response}) {
-        this._nockable.nock.post(this._basePath, request)
+        this._nockable.nock.post('', request)
             .delayConnection(delay)
             .times(-1)
             .reply(200, response);
