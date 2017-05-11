@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 export default function createRestaurant() {
     const fixture = init();
 
@@ -47,11 +49,13 @@ export default function createRestaurant() {
 
         activateFutureOrders(maxDelayMins = 1440){
             fixture.maxFutureOrderDelayMins = maxDelayMins;
+            _.set(fixture, 'orders.future.disabled', false);
             return this;
         },
 
         disableFutureOrders() {
             fixture.maxFutureOrderDelayMins = 0;
+            _.set(fixture, 'orders.future.disabled', true);
             return this;
         },
 
