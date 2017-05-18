@@ -52,7 +52,6 @@ describe('helpers: Restaurant', () => {
         });
 
         it('returns closed if no minimum time, restaurant is open during specific times, reservations are open during opening times', () => {
-
             const cal = moment.tz([2010, 12-1, 12, 0, 0, 0, 0], tz);
             const reservationTimeCalClosed = moment.tz([2010, 12-1, 12, 4, 0, 0, 0], tz);
             const reservationTimeCalOpen = moment.tz([2010, 12-1, 12, 9, 0, 0, 0], tz);
@@ -131,6 +130,44 @@ describe('helpers: Restaurant', () => {
             expect(Restaurant.olrAvailable({cal, reservationTimeCal: reservationOK, restaurant}).isEarly).to.be.false;
             expect(Restaurant.olrAvailable({cal, reservationTimeCal: reservationLate, restaurant}).isLate).to.be.true;
             expect(Restaurant.olrAvailable({cal, reservationTimeCal: reservationLate, restaurant}).isEarly).to.be.false;
+        });
+
+        it('returns closed when restaurant open 24/7, reservations are closed', () => {
+            const cal = moment.tz([2010, 12-1, 12, 0, 0, 0, 0], tz);
+            const reservationTimeCalClosed = moment.tz([2010, 12-1, 12, 4, 0, 0, 0], tz);
+
+            const reservations = fixtures.ReservationsInfo()
+                .setAvailability({availability: {exceptions: [{available: false, reason: "closed"}]}})
+                .setFutureDelayMins({min: 0, max: 60 * 24 * 60})
+                .val();
+
+            const restaurant = fixtures.Restaurant()
+                .setOpenTimes({type: 'olr', availability: openAlways})
+                .setReservations({reservations})
+                .val();
+
+            expect(Restaurant.olrAvailable({cal, reservationTimeCal: reservationTimeCalClosed, restaurant}).status).to.equal('unavailable');
+            expect(Restaurant.olrAvailable({cal, reservationTimeCal: reservationTimeCalClosed, restaurant}).until).to.equal(null);
+        });
+
+        it.only('returns closed when restaurant is open during specific times, reservations are closed', () => {
+            const cal = moment.tz([2010, 12-1, 12, 0, 0, 0, 0], tz);
+            const reservationTimeCalClosed = moment.tz([2010, 12-1, 12, 4, 0, 0, 0], tz);
+
+            const reservations = fixtures.ReservationsInfo()
+                .setAvailability({availability: {exceptions: [{available: false, reason: "closed"}]}})
+                .setFutureDelayMins({min: 0, max: 60 * 24 * 60})
+                .val();
+
+            const restaurant = fixtures.Restaurant()
+                .setOpenTimes({type: 'olr', availability: openSun8AmUntilSun8Pm})
+                .setReservations({reservations})
+                .val();
+
+            const result = Restaurant.olrAvailable({cal, reservationTimeCal: reservationTimeCalClosed, restaurant});
+
+            expect(result.status).to.equal('unavailable');
+            expect(result.until).to.equal(null);
         });
     });
 });
