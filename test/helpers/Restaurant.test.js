@@ -150,7 +150,7 @@ describe('helpers: Restaurant', () => {
             expect(Restaurant.olrAvailable({cal, reservationTimeCal: reservationTimeCalClosed, restaurant}).until).to.equal(null);
         });
 
-        it.only('returns closed when restaurant is open during specific times, reservations are closed', () => {
+        it('returns closed when restaurant is open during specific times, reservations are closed', () => {
             const cal = moment.tz([2010, 12-1, 12, 0, 0, 0, 0], tz);
             const reservationTimeCalClosed = moment.tz([2010, 12-1, 12, 4, 0, 0, 0], tz);
 

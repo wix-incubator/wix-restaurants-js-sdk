@@ -26,7 +26,7 @@ export default {
         const olrTimes = _.get(restaurant, 'reservations.availability', {});
 
         var it = new ConjunctiveTimeWindowsIterator({
-            iterators: [openTimes, olrTimes].map(availability => new AvailabilityIterator({availability, cal})),
+            iterators: [olrTimes, openTimes].map(availability => new AvailabilityIterator({availability, cal})),
             cal: reservationTimeCal.clone()
         });
 
