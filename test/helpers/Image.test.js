@@ -3,7 +3,7 @@
 import {expect} from 'chai';
 import Image from '../../src/helpers/Image';
 
-describe('Image', () => {
+describe.only('Image', () => {
 
     describe('fill', () => {
         const googleImagesApiUrl1 = 'https://lh4.ggpht.com/XXX';
@@ -50,14 +50,16 @@ describe('Image', () => {
         });
 
         it('resizes Wix Media Platform URLs when given a supported size', () => {
-            expect(Image.fill({url: wixMediaPlatformUrl1, width:150, height:250})).to.equal(`${wixMediaPlatformUrl1}v1/fill/w_150,h_250/file.jpg`);
-            expect(Image.fill({url: wixMediaPlatformUrl2, width:150, height:250})).to.equal(`${wixMediaPlatformUrl2}v1/fill/w_150,h_250/file.jpg`);
+            expect(Image.fill({url: wixMediaPlatformUrl1, width:150, height:250})).to.equal(wixMediaPlatformUrl1);
+            expect(Image.fill({url: wixMediaPlatformUrl2, width:150, height:250})).to.equal(wixMediaPlatformUrl2);
 
-            expect(Image.fill({url: wixMediaPlatformUrl1, width:5100, height:100})).to.equal(`${wixMediaPlatformUrl1}v1/fill/w_5100,h_100/file.jpg`);
-            expect(Image.fill({url: wixMediaPlatformUrl2, width:5100, height:100})).to.equal(`${wixMediaPlatformUrl2}v1/fill/w_5100,h_100/file.jpg`);
+            expect(Image.fill({url: wixMediaPlatformUrl1, width:5100, height:100})).to.equal(wixMediaPlatformUrl1);
+            expect(Image.fill({url: wixMediaPlatformUrl2, width:5100, height:100})).to.equal(wixMediaPlatformUrl2);
 
-            expect(Image.fill({url: wixMediaPlatformUrl1, width:100, height:5100})).to.equal(`${wixMediaPlatformUrl1}v1/fill/w_100,h_5100/file.jpg`);
-            expect(Image.fill({url: wixMediaPlatformUrl2, width:100, height:5100})).to.equal(`${wixMediaPlatformUrl2}v1/fill/w_100,h_5100/file.jpg`);
+            expect(Image.fill({url: wixMediaPlatformUrl1, width:100, height:5100})).to.equal(wixMediaPlatformUrl1);
+            expect(Image.fill({url: wixMediaPlatformUrl2, width:100, height:5100})).to.equal(wixMediaPlatformUrl2);
+
+            expect(Image.fill({url: wixMediaPlatformUrl2, width:100, height:5100, webpEnabled:true})).to.equal(wixMediaPlatformUrl2);
         });
 
         it('resizes Wix Media Platform URLs to their maximum size when given unsupported size', () => {
@@ -99,6 +101,7 @@ describe('Image', () => {
             expect(Image.fill({url: wixMediaManagerUrl, width:100, height:150})).to.equal(`${wixMediaManagerUrl}/v1/fill/w_100,h_150/file.jpg`);
             expect(Image.fill({url: wixMediaManagerUrl, width:150, height:100})).to.equal(`${wixMediaManagerUrl}/v1/fill/w_150,h_100/file.jpg`);
             expect(Image.fill({url: wixMediaManagerUrl, width:5100, height:5100})).to.equal(`${wixMediaManagerUrl}/v1/fill/w_5100,h_5100/file.jpg`);
+            expect(Image.fill({url: wixMediaManagerUrl, width:5100, height:5100, webpEnabled: true})).to.equal(`${wixMediaManagerUrl}/v1/fill/w_5100,h_5100/file.webp`);
         });
 
         it('resizes Wix Media Manager URLs to their maximum size when given unsupported size', () => {
@@ -115,6 +118,50 @@ describe('Image', () => {
             expect(Image.fill({url: unrecognizedUrl})).to.equal(unrecognizedUrl);
             expect(Image.fill({url: unrecognizedUrl, width: 20, height: 20})).to.equal(unrecognizedUrl);
         });
+
+        describe('Applies unsharp mask', () => {
+            it('does not do anything if sizes are invalid', () => {
+                expect(Image.fill({url: wixMediaManagerUrl, usm: { amount: '1.20', radius: '1.00', threshold: '0.01' }})).to.equal(wixMediaManagerUrl);
+            });
+
+            it('does not apply unsharp mask for partial usm object', () => {
+                expect(Image.fill({url: wixMediaManagerUrl, width:150, height:150, usm: { amount: null, radius: 1.00, threshold: 0.01 }}))
+                    .to.equal(`${wixMediaManagerUrl}/v1/fill/w_150,h_150/file.jpg`);
+
+                expect(Image.fill({url: wixMediaManagerUrl, width:150, height:150, usm: { amount: 1.20, radius: null, threshold: 0.01 }}))
+                    .to.equal(`${wixMediaManagerUrl}/v1/fill/w_150,h_150/file.jpg`);
+
+                expect(Image.fill({url: wixMediaManagerUrl, width:150, height:150, usm: { amount: 1.20, radius: 1.00, threshold: null }}))
+                    .to.equal(`${wixMediaManagerUrl}/v1/fill/w_150,h_150/file.jpg`);
+
+                expect(Image.fill({url: wixMediaManagerUrl, width:150, height:150}))
+                    .to.equal(`${wixMediaManagerUrl}/v1/fill/w_150,h_150/file.jpg`);
+            });
+
+            it('does not apply mask on string values', () => {
+                expect(Image.fill({url: wixMediaManagerUrl, width:150, height:150, usm: { amount: '1.20', radius: '1.00', threshold: '0.01' }}))
+                    .to.equal(`${wixMediaManagerUrl}/v1/fill/w_150,h_150/file.jpg`);
+            });
+
+            it('applies mask on numeric values', () => {
+                expect(Image.fill({url: wixMediaManagerUrl, width:150, height:150, usm: { amount: 1.20, radius: 1.00, threshold: 0.01 }}))
+                    .to.equal(`${wixMediaManagerUrl}/v1/fill/w_150,h_150,usm_1.20_1.00_0.01/file.jpg`);
+
+                expect(Image.fill({url: wixMediaManagerUrl, width:150, height:150, usm: { amount: 1.23, radius: 1.1, threshold: 0.2 }}))
+                    .to.equal(`${wixMediaManagerUrl}/v1/fill/w_150,h_150,usm_1.23_1.10_0.20/file.jpg`);
+            });
+
+            it('applies mask on round values', () => {
+                expect(Image.fill({url: wixMediaManagerUrl, width:150, height:150, usm: { amount: 1, radius: 1, threshold: 0 }}))
+                    .to.equal(`${wixMediaManagerUrl}/v1/fill/w_150,h_150,usm_1.00_1.00_0.00/file.jpg`);
+            });
+
+            it('applies mask with default values', () => {
+                expect(Image.fillSharp({url: wixMediaManagerUrl, width:150, height:150}))
+                    .to.equal(`${wixMediaManagerUrl}/v1/fill/w_150,h_150,usm_1.20_1.00_0.01/file.jpg`);
+            });
+        });
+
     });
 });
 
