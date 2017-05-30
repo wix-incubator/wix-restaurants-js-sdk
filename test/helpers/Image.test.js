@@ -3,7 +3,7 @@
 import {expect} from 'chai';
 import Image from '../../src/helpers/Image';
 
-describe.only('Image', () => {
+describe('Image', () => {
 
     describe('fill', () => {
         const googleImagesApiUrl1 = 'https://lh4.ggpht.com/XXX';
