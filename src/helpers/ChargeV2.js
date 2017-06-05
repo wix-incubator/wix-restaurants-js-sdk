@@ -236,11 +236,14 @@ export default {
 
     calculateAmount : function(params) {
         var charge = params.charge;
+        var tip = params.tip || 0;
         var orderItems = params.orderItems || [];
         var orderCharges = params.orderCharges || [];
         var extraCost = params.extraCost;
 
         if (!this.isApplicable(params)) return 0;
+
+        if (charge.type == 'tip') return tip;
 
         return calculateOperator({operator:charge.operator, orderItems:orderItems, orderCharges:orderCharges,
             extraCost:extraCost});

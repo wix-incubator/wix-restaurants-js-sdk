@@ -110,6 +110,9 @@ describe('helpers: ChargesV2', () => {
             const charge3 = fixtures.ChargeV2().id('charge3').tax({percentage: 5000}).val();
             expect(ChargeV2.calculateAmount({charge:charge3, orderItems, orderCharges})).to.equal(50);
 
+            const charge4 = fixtures.ChargeV2().tip().val();
+            expect(ChargeV2.calculateAmount({charge:charge4, tip:12345})).to.equal(12345);
+
             // Fixed
             const fixedOrderItems = [
                 fixtures.OrderItem().setItemId('aaa').setPrice(1000).val(),

@@ -8,7 +8,7 @@ export default {
     /**
      * @return The orderCharges (ChargesV2) that should be added to the order
      */
-    getOrderCharges:function({dispatchType, dispatchTime, orderItems, source, platform, chargesV2, timezone}) {
+    getOrderCharges:function({dispatchType, dispatchTime, orderItems, tip, source, platform, chargesV2, timezone}) {
 
         let orderCharges = [];
         let prevOrderCharges = [];
@@ -43,6 +43,7 @@ export default {
                             deliveryTime    : _dispatchTime,
                             deliveryType    : dispatchType,
                             source          : source,
+                            tip             : tip,
                             platform        : platform,
                             orderItems      : orderItems,
                             orderCharges    : orderCharges

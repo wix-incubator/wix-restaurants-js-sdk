@@ -92,6 +92,11 @@ export default function createCharge() {
             return this;
         },
 
+        tip() {
+            fixture.type = 'tip';
+            return this;
+        },
+
         deliveryTypes(types) {
             if (types) {
                 fixture.condition.conditions[1] = {
