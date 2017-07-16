@@ -65,13 +65,15 @@ describe('helpers: Order', () => {
             const chargesV2 = [
                 fixtures.ChargeV2().id('charge1').tax(10).val(),
                 fixtures.ChargeV2().id('charge2').tax(20).val(),
-                fixtures.ChargeV2().id('charge3').percentageDiscount({percentage:10000}).val()
+                fixtures.ChargeV2().id('charge3').percentageDiscount({percentage:10000}).val(),
+                fixtures.ChargeV2().id('charge4').tax(20).close().val(),
             ];
 
             const orderCharges = [
                 fixtures.OrderCharge().setChargeId('charge1').setAmount(1000).val(),
                 fixtures.OrderCharge().setChargeId('charge2').setAmount(2000).val(),
-                fixtures.OrderCharge().setChargeId('charge3').setAmount(5000).val()
+                fixtures.OrderCharge().setChargeId('charge3').setAmount(5000).val(),
+                fixtures.OrderCharge().setChargeId('charge4').setAmount(6000).val()
             ];
 
             const total = Order.sumTaxCharges({chargesV2, orderCharges});
@@ -83,6 +85,18 @@ describe('helpers: Order', () => {
             const total = Order.sumTaxCharges({chargeV2: [], orderCharges: []});
 
             expect(total).to.equal(null);
+
+            const chargesV2 = [
+                fixtures.ChargeV2().id('charge1').tax(20).close().val()
+            ];
+
+            const orderCharges = [
+                fixtures.OrderCharge().setChargeId('charge1').setAmount(1000).val()
+            ];
+
+            const total2 = Order.sumTaxCharges({chargesV2, orderCharges});
+
+            expect(total2).to.equal(null);
         });
     });
 });

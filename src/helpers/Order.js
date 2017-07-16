@@ -70,9 +70,12 @@ export default {
     },
 
     sumTaxCharges:function({chargesV2, orderCharges}) {
-        if (!_.find(chargesV2, charge => charge.type === 'tax')) return null;
+        if (!_.find(chargesV2, charge => charge.type === 'tax' && charge.state !== 'closed')) return null;
 
-        const taxOrderCharges = _.filter(orderCharges, orderCharge => (_.find(chargesV2, c => c.id === orderCharge.chargeId)).type === 'tax');
+        const taxOrderCharges = _.filter(orderCharges, orderCharge => {
+            const charge = _.find(chargesV2, c => c.id === orderCharge.chargeId) || {};
+            return charge.type === 'tax' && charge.state !== 'closed';
+        });
         return _.sumBy(taxOrderCharges, 'amount') || 0;
     }
 };
