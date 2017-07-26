@@ -12,5 +12,6 @@ import Platform from './Platform.js';
 import ReservationsInfo from './ReservationsInfo.js';
 import Menu from './Menu.js';
 import OrdersInfo from './OrdersInfo.js';
+import Section from './Section.js';
 
-export {Availability, ChargeV2, OrderCharge, OrderItem, Reservation, Restaurant, Dispatch, Payment, Contact, Order, Platform, ReservationsInfo, Menu, OrdersInfo};
+export {Availability, ChargeV2, OrderCharge, OrderItem, Reservation, Restaurant, Dispatch, Payment, Contact, Order, Platform, ReservationsInfo, Menu, OrdersInfo, Section};
