@@ -36,19 +36,33 @@ export default {
                         return null;
                     }
                 } else {
-                    return {
-                        chargeId:charge.id,
-                        amount:ChargeV2Helper.calculateAmount({
-                            charge          : charge,
-                            deliveryTime    : _dispatchTime,
-                            deliveryType    : dispatchType,
-                            source          : source,
-                            tip             : tip,
-                            platform        : platform,
-                            orderItems      : orderItems,
-                            orderCharges    : orderCharges
-                        })
-                    };
+                    const amount = ChargeV2Helper.calculateAmount({
+                        charge          : charge,
+                        deliveryTime    : _dispatchTime,
+                        deliveryType    : dispatchType,
+                        source          : source,
+                        tip             : tip,
+                        platform        : platform,
+                        orderItems      : orderItems,
+                        orderCharges    : orderCharges
+                    });
+                    if((charge.mandatory) || (amount != 0)) {
+                        return {
+                            chargeId:charge.id,
+                            amount:ChargeV2Helper.calculateAmount({
+                                charge          : charge,
+                                deliveryTime    : _dispatchTime,
+                                deliveryType    : dispatchType,
+                                source          : source,
+                                tip             : tip,
+                                platform        : platform,
+                                orderItems      : orderItems,
+                                orderCharges    : orderCharges
+                            })
+                        };
+                    } else {
+                        return null;
+                    }
                 }
             }));
 
