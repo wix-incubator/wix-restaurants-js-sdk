@@ -43,6 +43,15 @@ Creates an [Availability](https://github.com/wix/wix-restaurants-availability/bl
 - ```fixtures.Avalability.addWeeklyFromDate({start, end})``` - Adds duration to the availability.weekly field, translating the start and end to minutes of week (mainly used for testing).
 
 ## Helpers
+### DeliveryDispatchInfo
+Helper functions to work with DeliveryDispatchInfo objects. See test for usage.
+- ```isActive({info})```.
+- ```canMeetPrice({info, orderPrice})```.
+- ```doesDeliverToLatLng({info, latLng})```.
+- ```isAvailable({info, orderTime})```.
+- ```canMeetDeliveryTime({info, orderTime, now})```.
+- ```filterAndSort({infos, filter, sortBy})```.
+
 ### ChargeV2
 Helper functions to work with ChargeV2 objects.
 - ```isApplicable({charge, deliveryTime, deliveryType, orderItems, source, platform})``` - Checks if a charge is applicable to the current parameters.
