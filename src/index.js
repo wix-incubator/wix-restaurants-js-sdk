@@ -1,7 +1,8 @@
 import * as helpers from './helpers';
 import * as fixtures from './fixtures';
 import * as testkit from './testkit';
+import * as clients from './clients';
 
-export { default as WixRestaurantsClient } from './client/WixRestaurantsClient.js';
+export { default as WixRestaurantsClient } from './clients/WixRestaurantsClient';
 
-export { helpers, fixtures, testkit };
+export { clients, helpers, fixtures, testkit };

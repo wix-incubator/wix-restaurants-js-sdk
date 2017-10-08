@@ -1,13 +1,12 @@
-import { assert, expect }         from 'chai';
-import {WixRestaurantsClient} from '../../src/index';
-import {testkit} from '../../src/index';
+import { assert, expect } from 'chai';
+import { clients, testkit } from '../../src/index';
 import _ from 'lodash';
 import { NockNockable } from 'nockable';
 
 describe('WixRestaurantsClient', () => {
     const nockable = new NockNockable({endpoint: 'https://api.wixrestaurants.com/v1.1'});
     const invalidEndpointUrl = 'http://whatever.noexist';
-    const wixRestaurantsClient = new WixRestaurantsClient({endpointUrl: nockable.endpoint});
+    const wixRestaurantsClient = new clients.WixRestaurantsClient({endpointUrl: nockable.endpoint});
     const driver = new testkit.WixRestaurantsDriver({nockable});
 
     before(() => {
@@ -103,7 +102,7 @@ describe('WixRestaurantsClient', () => {
         });
 
         it('gracefully fails on timeout', () => {
-            const wixRestaurantsClientWithTimeout = new WixRestaurantsClient({
+            const wixRestaurantsClientWithTimeout = new clients.WixRestaurantsClient({
                 endpointUrl: nockable.endpoint,
                 timeout: 10
             });
@@ -129,7 +128,7 @@ describe('WixRestaurantsClient', () => {
         });
 
         it('gracefully fails when network is down', () => {
-            const wixRestaurantsClientWithInvalidEndpointUrl = new WixRestaurantsClient({
+            const wixRestaurantsClientWithInvalidEndpointUrl = new clients.WixRestaurantsClient({
                 endpointUrl : invalidEndpointUrl
             });
 
