@@ -4,26 +4,56 @@ import _ from 'lodash';
 
 const CONDITIONS = {
     'true': function() {
-        return true;
+        return { value: true, reasons: [] };
     },
     'false': function() {
-        return false;
+        return { value: false, reasons: ['false'] };
     },
     'not': function(params) {
         var condition = params.condition;
-        return !checkCondition(_.extend(params, {condition:condition.condition}));
+        return {
+            value: !checkConditionWithReasons(_.extend(params, {condition:condition.condition})),
+            reasons: []
+        };
     },
     'and': function(params) {
         var condition = params.condition;
-        return _.every(condition.conditions, function(_condition) {
-            return checkCondition(_.extend(params, {condition:_condition}));
-        });
+
+        const results = _.map(condition.conditions, _condition =>
+            checkConditionWithReasons(_.extend(params, {condition:_condition})));
+
+        const value = _.every(results, r => r.value);
+
+        if (value) {
+            return {
+                value,
+                reasons: []
+            };
+        }
+
+        return {
+            value,
+            reasons: _.union(_.map(_.filter(results, r => !r.value), r => r.reasons))
+        };
     },
     'or': function(params) {
-        var condition = params.condition;
-        return _.some(condition.conditions, function(_condition) {
-            return checkCondition(_.extend(params, {condition:_condition}));
-        });
+        const condition = params.condition;
+
+        const results = _.map(condition.conditions, _condition =>
+            checkConditionWithReasons(_.extend(params, {condition:_condition})));
+
+        const value = _.some(results, r => r.value);
+        if (value) {
+            return {
+                value,
+                reasons: []
+            };
+        }
+
+        return {
+            value,
+            reasons: _.union(_.map(r => r.reasons))
+        };
     },
     'order_delivery_time': function(params) {
         var condition = params.condition;
@@ -35,13 +65,19 @@ const CONDITIONS = {
         }
 
         var status = util.next();
-        return !(status.status === 'unavailable');
+        return {
+            value: !(status.status === 'unavailable'),
+            reasons: [status.reason || 'order_delivery_time']
+        };
     },
     'order_delivery_type': function(params) {
         var condition = params.condition;
         var deliveryType = params.deliveryType;
 
-        return condition.deliveryType === deliveryType;
+        return {
+            value: condition.deliveryType === deliveryType,
+            reasons: ['order_delivery_type']
+        };
     },
     'order_items_price': function(params) {
         var condition = params.condition;
@@ -52,35 +88,53 @@ const CONDITIONS = {
             totalApplicableItems += OrderItemHelper.getTotalPrice({orderItem});
         });
 
-        if ((condition.min) && (totalApplicableItems < condition.min)) return false;
-        if ((condition.max) && (totalApplicableItems > condition.max)) return false;
+        if ((condition.min) && (totalApplicableItems < condition.min)) return {
+            value: false,
+            reasons: ['order_items_price_min']
+        };
 
-        return true;
+        if ((condition.max) && (totalApplicableItems > condition.max)) return {
+            value: false,
+            reasons: ['order_items_price_max']
+        };
+
+        return { value: true, reasons:[] };
     },
     'order_platform': function(params) {
         var condition = params.condition;
         var platform = params.platform;
 
-        return platform === condition.platform;
+        return {
+            value: platform === condition.platform,
+            reasons: ['order_platform']
+        };
     },
     'order_source': function(params) {
         var condition = params.condition;
         var source = params.source;
 
-        return source === condition.source;
+        return {
+            value: source === condition.source,
+            reasons: ['order_source']
+        };
     },
     'user_charge_usage': function() {
         throw new Error('user_charge_usage not implemented yet.');
     }
 };
 
-export function checkCondition(params) {
+export function checkConditionWithReasons(params) {
     var condition = params.condition;
 
-    var func = CONDITIONS[condition.type] || function() { return false; };
+    var func = CONDITIONS[condition.type] || function() { return { value: false, reasons:[] }; };
     return func(params);
 }
 
+export function checkCondition(params) {
+    return checkConditionWithReasons(params).value;
+}
+
 export default {
-    checkCondition
+    checkCondition,
+    checkConditionWithReasons
 };
