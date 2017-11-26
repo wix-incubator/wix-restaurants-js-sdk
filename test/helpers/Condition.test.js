@@ -23,5 +23,30 @@ describe('helpers: Condition', () => {
             reasons: ['order_platform']
         });
 
+        expect(Condition.checkConditionWithReasons({
+            condition: {
+                type: 'and',
+                conditions: [{
+                    type: 'order_platform',
+                    platform: 'aaa'
+                }]
+            }
+        })).to.deep.equal({
+            value: false,
+            reasons: ['order_platform']
+        });
+
+        expect(Condition.checkConditionWithReasons({
+            condition: {
+                type: 'or',
+                conditions: [{
+                    type: 'order_platform',
+                    platform: 'aaa'
+                }]
+            }
+        })).to.deep.equal({
+            value: false,
+            reasons: ['order_platform']
+        });
     });
 });

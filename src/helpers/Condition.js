@@ -33,7 +33,7 @@ const CONDITIONS = {
 
         return {
             value,
-            reasons: _.union(_.map(_.filter(results, r => !r.value), r => r.reasons))
+            reasons: _.flatten(_.map(_.filter(results, r => !r.value), r => r.reasons))
         };
     },
     'or': function(params) {
@@ -52,7 +52,7 @@ const CONDITIONS = {
 
         return {
             value,
-            reasons: _.union(_.map(r => r.reasons))
+            reasons: _.flatten(_.map(_.filter(results, r => !r.value), r => r.reasons))
         };
     },
     'order_delivery_time': function(params) {
