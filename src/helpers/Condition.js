@@ -11,10 +11,12 @@ const CONDITIONS = {
     },
     'not': function(params) {
         var condition = params.condition;
-        return {
-            value: !checkConditionWithReasons(_.extend(params, {condition:condition.condition})),
+        const ret = {
+            value: !checkConditionWithReasons(_.extend(params, {condition:condition.condition})).value,
             reasons: []
         };
+
+        return ret;
     },
     'and': function(params) {
         var condition = params.condition;
@@ -104,10 +106,12 @@ const CONDITIONS = {
         var condition = params.condition;
         var platform = params.platform;
 
-        return {
+        const ret = {
             value: platform === condition.platform,
             reasons: ['order_platform']
         };
+
+        return ret;
     },
     'order_source': function(params) {
         var condition = params.condition;
