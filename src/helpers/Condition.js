@@ -62,7 +62,10 @@ const CONDITIONS = {
         var deliveryTime = params.deliveryTime;
 
         if (!deliveryTime) {
-            return true;
+            return {
+                value: true,
+                reasons: []
+            };
         }
 
         var util = new availability.AvailabilityIterator({cal:deliveryTime, availability:condition.availability || {}});
