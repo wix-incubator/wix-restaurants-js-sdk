@@ -61,6 +61,10 @@ const CONDITIONS = {
         var condition = params.condition;
         var deliveryTime = params.deliveryTime;
 
+        if (!deliveryTime) {
+            return true;
+        }
+
         var util = new availability.AvailabilityIterator({cal:deliveryTime, availability:condition.availability || {}});
         if (!util.hasNext()) {
             return false;
