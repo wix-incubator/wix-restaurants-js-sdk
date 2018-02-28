@@ -57,12 +57,12 @@ export default class WixRestaurantsAnalyticsClient {
         });
     }
 
-    restaurantOrderStats({accessToken, restaurantId, metric, period, timezone, since, until}) {
+    restaurantOrderStats({accessToken, restaurantId, metric, groupBy, timezone, since, until}) {
         return this._request({
             resource: `/restaurants/${restaurantId}/orders/stats`,
             params: {
                 metric,
-                period,
+                group_by: groupBy,
                 time_zone: timezone,
                 since,
                 until
@@ -71,12 +71,12 @@ export default class WixRestaurantsAnalyticsClient {
         }).then(value => value.stats);
     }
 
-    chainOrderStats({accessToken, chainId, metric, period, timezone, since, until}) {
+    chainOrderStats({accessToken, chainId, metric, groupBy, timezone, since, until}) {
         return this._request({
             resource: `/chains/${chainId}/orders/stats`,
             params: {
                 metric,
-                period,
+                group_by: groupBy,
                 time_zone: timezone,
                 since,
                 until

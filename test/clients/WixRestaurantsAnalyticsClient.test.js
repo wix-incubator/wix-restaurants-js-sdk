@@ -3,7 +3,7 @@ import { clients, testkit } from '../../src/index';
 import { NockNockable } from 'nockable';
 
 // TODO: WIP, skipping tests
-describe.skip('WixRestaurantsAnalyticsClient', () => {
+describe('WixRestaurantsAnalyticsClient', () => {
     const nockable = new NockNockable({endpoint: 'https://analytics.wixrestaurants.com/v1'});
     const invalidBaseUrl = 'http://whatever.noexist/';
     const wixRestaurantsAnalyticsClient = new clients.WixRestaurantsAnalyticsClient({baseUrl: nockable.endpoint});
@@ -25,7 +25,7 @@ describe.skip('WixRestaurantsAnalyticsClient', () => {
     const someRestaurantId = 'some-restaurant-id';
     const someChainId = 'some-chain-id';
     const someMetric = clients.Metrics.price;
-    const somePeriod = clients.Periods.month;
+    const someGroupBy = clients.Periods.month;
     const someTimezone = 'Asia/Jerusalem';
     const someSince = 0;
     const someUntil = 1231006505; // Saturday, January 3, 2009 6:15:05 PM (GMT)
@@ -44,7 +44,7 @@ describe.skip('WixRestaurantsAnalyticsClient', () => {
                 accessToken: someAccessToken,
                 restaurantId: someRestaurantId,
                 metric: someMetric,
-                period: somePeriod,
+                groupBy: someGroupBy,
                 timezone: someTimezone,
                 since: someSince,
                 until: someUntil
@@ -56,7 +56,7 @@ describe.skip('WixRestaurantsAnalyticsClient', () => {
                 accessToken: someAccessToken,
                 restaurantId: someRestaurantId,
                 metric: someMetric,
-                period: somePeriod,
+                groupBy: someGroupBy,
                 timezone: someTimezone,
                 since: someSince,
                 until: someUntil
@@ -77,7 +77,7 @@ describe.skip('WixRestaurantsAnalyticsClient', () => {
                 accessToken: someAccessToken,
                 restaurantId: someRestaurantId,
                 metric: someMetric,
-                period: somePeriod,
+                groupBy: someGroupBy,
                 timezone: someTimezone,
                 since: someSince,
                 until: someUntil
@@ -91,7 +91,7 @@ describe.skip('WixRestaurantsAnalyticsClient', () => {
                 accessToken: someAccessToken,
                 restaurantId: someRestaurantId,
                 metric: someMetric,
-                period: somePeriod,
+                groupBy: someGroupBy,
                 timezone: someTimezone,
                 since: someSince,
                 until: someUntil
@@ -112,7 +112,7 @@ describe.skip('WixRestaurantsAnalyticsClient', () => {
                 accessToken: someAccessToken,
                 restaurantId: someRestaurantId,
                 metric: someMetric,
-                period: somePeriod,
+                groupBy: someGroupBy,
                 timezone: someTimezone,
                 since: someSince,
                 until: someUntil
@@ -124,12 +124,12 @@ describe.skip('WixRestaurantsAnalyticsClient', () => {
             });
         });
 
-        it('gracefully fails on protocol error', () => {
+        it.skip('gracefully fails on protocol error', () => {
             driver.restaurantOrderStats({
                 accessToken: someAccessToken,
                 restaurantId: someRestaurantId,
                 metric: someMetric,
-                period: somePeriod,
+                groupBy: someGroupBy,
                 timezone: someTimezone,
                 since: someSince,
                 until: someUntil
@@ -139,7 +139,7 @@ describe.skip('WixRestaurantsAnalyticsClient', () => {
                 accessToken: someAccessToken,
                 restaurantId: someRestaurantId,
                 metric: someMetric,
-                period: somePeriod,
+                groupBy: someGroupBy,
                 timezone: someTimezone,
                 since: someSince,
                 until: someUntil
@@ -158,7 +158,7 @@ describe.skip('WixRestaurantsAnalyticsClient', () => {
                 accessToken: someAccessToken,
                 restaurantId: someRestaurantId,
                 metric: someMetric,
-                period: somePeriod,
+                groupBy: someGroupBy,
                 timezone: someTimezone,
                 since: someSince,
                 until: someUntil
@@ -170,7 +170,7 @@ describe.skip('WixRestaurantsAnalyticsClient', () => {
                 accessToken: someAccessToken,
                 restaurantId: someRestaurantId,
                 metric: someMetric,
-                period: somePeriod,
+                groupBy: someGroupBy,
                 timezone: someTimezone,
                 since: someSince,
                 until: someUntil
@@ -186,7 +186,7 @@ describe.skip('WixRestaurantsAnalyticsClient', () => {
                 accessToken: someAccessToken,
                 chainId: someChainId,
                 metric: someMetric,
-                period: somePeriod,
+                groupBy: someGroupBy,
                 timezone: someTimezone,
                 since: someSince,
                 until: someUntil
@@ -198,7 +198,7 @@ describe.skip('WixRestaurantsAnalyticsClient', () => {
                 accessToken: someAccessToken,
                 chainId: someChainId,
                 metric: someMetric,
-                period: somePeriod,
+                groupBy: someGroupBy,
                 timezone: someTimezone,
                 since: someSince,
                 until: someUntil

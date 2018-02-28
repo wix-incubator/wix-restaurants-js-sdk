@@ -15,12 +15,12 @@ export default class WixRestaurantsAnalyticsDriver {
         return this._nockable.reset();
     }
 
-    restaurantOrderStats({ accessToken, restaurantId, metric, period, timezone, since, until }) {
+    restaurantOrderStats({ accessToken, restaurantId, metric, groupBy, timezone, since, until }) {
         return this._aRequestFor({
             resource: `/restaurants/${restaurantId}/orders/stats`,
             query: {
                 metric,
-                period,
+                group_by: groupBy,
                 time_zone: timezone,
                 since,
                 until
@@ -29,12 +29,12 @@ export default class WixRestaurantsAnalyticsDriver {
         });
     }
 
-    chainOrderStats({ accessToken, chainId, metric, period, timezone, since, until }) {
+    chainOrderStats({ accessToken, chainId, metric, groupBy, timezone, since, until }) {
         return this._aRequestFor({
             resource: `/chains/${chainId}/orders/stats`,
             query: {
                 metric,
-                period,
+                group_by: groupBy,
                 time_zone: timezone,
                 since,
                 until
