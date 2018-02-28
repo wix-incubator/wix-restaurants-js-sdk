@@ -14,7 +14,9 @@ export const Periods = {
     week: 'week',
     month: 'month',
     year: 'year',
-    lifetime: 'lifetime'
+    lifetime: 'lifetime',
+    hourOfWeek: 'hourOfWeek',
+    monthOfYear: 'monthOfYear'
 };
 
 const parseSuccess = (response) => {
