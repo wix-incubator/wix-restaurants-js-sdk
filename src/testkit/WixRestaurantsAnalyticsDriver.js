@@ -15,7 +15,7 @@ export default class WixRestaurantsAnalyticsDriver {
         return this._nockable.reset();
     }
 
-    restaurantOrderStats({ accessToken, restaurantId, metric, groupBy, timezone, since, until }) {
+    restaurantOrderStats({ accessToken, restaurantId, metric, groupBy, timezone, since, until, statuses, platforms }) {
         return this._aRequestFor({
             resource: `/restaurants/${restaurantId}/orders/stats`,
             query: {
@@ -23,13 +23,15 @@ export default class WixRestaurantsAnalyticsDriver {
                 group_by: groupBy,
                 time_zone: timezone,
                 since,
-                until
+                until,
+                statuses,
+                platforms
             },
             accessToken
         });
     }
 
-    chainOrderStats({ accessToken, chainId, metric, groupBy, timezone, since, until }) {
+    chainOrderStats({ accessToken, chainId, metric, groupBy, timezone, since, until, statuses, platforms }) {
         return this._aRequestFor({
             resource: `/chains/${chainId}/orders/stats`,
             query: {
@@ -37,7 +39,9 @@ export default class WixRestaurantsAnalyticsDriver {
                 group_by: groupBy,
                 time_zone: timezone,
                 since,
-                until
+                until,
+                statuses,
+                platforms
             },
             accessToken
         });

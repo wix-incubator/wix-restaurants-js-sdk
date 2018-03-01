@@ -29,6 +29,10 @@ describe('WixRestaurantsAnalyticsClient', () => {
     const someTimezone = 'Asia/Jerusalem';
     const someSince = 0;
     const someUntil = 1231006505; // Saturday, January 3, 2009 6:15:05 PM (GMT)
+    const someStatuses = ['new', 'accepted'];
+    const somePlatforms = ['web'];
+    const someStatusesStr = someStatuses.join(',');
+    const somePlatformsStr = somePlatforms.join(',');
 
     const someStats = [ { startTime: '1970-01-01', count: 0, total: 0 } ];
 
@@ -47,7 +51,9 @@ describe('WixRestaurantsAnalyticsClient', () => {
                 groupBy: someGroupBy,
                 timezone: someTimezone,
                 since: someSince,
-                until: someUntil
+                until: someUntil,
+                statuses: someStatusesStr,
+                platforms: somePlatformsStr
             }).failWith(
                 someError
             );
@@ -59,7 +65,9 @@ describe('WixRestaurantsAnalyticsClient', () => {
                 groupBy: someGroupBy,
                 timezone: someTimezone,
                 since: someSince,
-                until: someUntil
+                until: someUntil,
+                statuses: someStatuses,
+                platforms: somePlatforms
             }).then((/*stats*/) => {
                 assert.fail(false, true, 'expected error');
             }, (error) => {
@@ -80,7 +88,9 @@ describe('WixRestaurantsAnalyticsClient', () => {
                 groupBy: someGroupBy,
                 timezone: someTimezone,
                 since: someSince,
-                until: someUntil
+                until: someUntil,
+                statuses: someStatusesStr,
+                platforms: somePlatformsStr
             }).delayBy({
                 ms: 1000
             }).succeedWith({
@@ -94,7 +104,9 @@ describe('WixRestaurantsAnalyticsClient', () => {
                 groupBy: someGroupBy,
                 timezone: someTimezone,
                 since: someSince,
-                until: someUntil
+                until: someUntil,
+                statuses: someStatuses,
+                platforms: somePlatforms
             }).then((/*stats*/) => {
                 assert.fail(false, true, 'expected error');
             }, (error) => {
@@ -115,7 +127,9 @@ describe('WixRestaurantsAnalyticsClient', () => {
                 groupBy: someGroupBy,
                 timezone: someTimezone,
                 since: someSince,
-                until: someUntil
+                until: someUntil,
+                statuses: someStatuses,
+                platforms: somePlatforms
             }).then((/*stats*/) => {
                 assert.fail(false, true, 'expected error');
             }, (error) => {
@@ -132,7 +146,9 @@ describe('WixRestaurantsAnalyticsClient', () => {
                 groupBy: someGroupBy,
                 timezone: someTimezone,
                 since: someSince,
-                until: someUntil
+                until: someUntil,
+                statuses: someStatusesStr,
+                platforms: somePlatformsStr
             }).failWithProtocolError();
 
             return wixRestaurantsAnalyticsClient.restaurantOrderStats({
@@ -142,7 +158,9 @@ describe('WixRestaurantsAnalyticsClient', () => {
                 groupBy: someGroupBy,
                 timezone: someTimezone,
                 since: someSince,
-                until: someUntil
+                until: someUntil,
+                statuses: someStatuses,
+                platforms: somePlatforms
             }).then((/*stats*/) => {
                 assert.fail(false, true, 'expected error');
             }, (error) => {
@@ -161,7 +179,9 @@ describe('WixRestaurantsAnalyticsClient', () => {
                 groupBy: someGroupBy,
                 timezone: someTimezone,
                 since: someSince,
-                until: someUntil
+                until: someUntil,
+                statuses: someStatusesStr,
+                platforms: somePlatformsStr
             }).succeedWith({
                 stats: someStats
             });
@@ -173,7 +193,9 @@ describe('WixRestaurantsAnalyticsClient', () => {
                 groupBy: someGroupBy,
                 timezone: someTimezone,
                 since: someSince,
-                until: someUntil
+                until: someUntil,
+                statuses: someStatuses,
+                platforms: somePlatforms
             }).then((stats) => {
                 expect(stats).to.deep.equal(someStats);
             });
@@ -189,7 +211,9 @@ describe('WixRestaurantsAnalyticsClient', () => {
                 groupBy: someGroupBy,
                 timezone: someTimezone,
                 since: someSince,
-                until: someUntil
+                until: someUntil,
+                statuses: someStatusesStr,
+                platforms: somePlatformsStr
             }).succeedWith({
                 stats: someStats
             });
@@ -201,7 +225,9 @@ describe('WixRestaurantsAnalyticsClient', () => {
                 groupBy: someGroupBy,
                 timezone: someTimezone,
                 since: someSince,
-                until: someUntil
+                until: someUntil,
+                statuses: someStatuses,
+                platforms: somePlatforms
             }).then((stats) => {
                 expect(stats).to.deep.equal(someStats);
             });

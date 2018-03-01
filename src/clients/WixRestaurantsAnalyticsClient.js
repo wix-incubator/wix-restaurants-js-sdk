@@ -19,6 +19,29 @@ export const Periods = {
     monthOfYear: 'monthOfYear'
 };
 
+export const Platforms = {
+    web: 'web',
+    mobileweb: 'mobileweb',
+    android: 'android',
+    ios: 'ios',
+    facebook: 'facebook',
+    callcenter: 'callcenter',
+    'kiosk.android': 'kiosk.android',
+    'kiosk.ios': 'kiosk.ios',
+    'com.messenger': 'com.messenger',
+    'org.telegram': 'org.telegram',
+    'com.slack': 'com.slack'
+};
+
+export const Statuses = {
+    pending: 'pending',
+    new: 'new',
+    accepted: 'accepted',
+    canceled: 'canceled'
+};
+
+const stringArray = arr => (!arr || !arr.length ? undefined : arr.join(','));
+
 const parseSuccess = (response) => {
     if (response.data) {
         return Q.resolve(response.data);
@@ -59,7 +82,7 @@ export default class WixRestaurantsAnalyticsClient {
         });
     }
 
-    restaurantOrderStats({accessToken, restaurantId, metric, groupBy, timezone, since, until}) {
+    restaurantOrderStats({accessToken, restaurantId, metric, groupBy, timezone, since, until, statuses, platforms}) {
         return this._request({
             resource: `/restaurants/${restaurantId}/orders/stats`,
             params: {
@@ -67,13 +90,15 @@ export default class WixRestaurantsAnalyticsClient {
                 group_by: groupBy,
                 time_zone: timezone,
                 since,
-                until
+                until,
+                statuses: stringArray(statuses),
+                platforms: stringArray(platforms)
             },
             accessToken
         }).then(value => value.stats);
     }
 
-    chainOrderStats({accessToken, chainId, metric, groupBy, timezone, since, until}) {
+    chainOrderStats({accessToken, chainId, metric, groupBy, timezone, since, until, statuses, platforms}) {
         return this._request({
             resource: `/chains/${chainId}/orders/stats`,
             params: {
@@ -81,7 +106,9 @@ export default class WixRestaurantsAnalyticsClient {
                 group_by: groupBy,
                 time_zone: timezone,
                 since,
-                until
+                until,
+                statuses: stringArray(statuses),
+                platforms: stringArray(platforms)
             },
             accessToken
         }).then(value => value.stats);
