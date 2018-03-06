@@ -2,10 +2,6 @@ import Q from 'q';
 import axios from 'axios';
 import qs from 'qs';
 
-export const BaseUrls = {
-    production: 'https://api.wixrestaurants.com/v2'
-};
-
 const baseErrorType = 'https://www.wixrestaurants.com/errors/';
 
 const parseSuccess = (response) => {
@@ -49,7 +45,7 @@ const normalizeQueryParams = (params) => {
         .reduce((obj, [name, value]) => Object.assign(obj, {[name]: normalizeQueryParamValue(value)}), {});
 };
 
-export const createRestClient = ({ baseUrl = BaseUrls.production, timeout = 0 } = {}) => {
+export const createRestClient = ({ baseUrl = 'https://api.wixrestaurants.com/v2', timeout = 0 } = {}) => {
     return (path, method = 'get', params, auth) => {
         const headers = {
             Accept: 'application/json'
