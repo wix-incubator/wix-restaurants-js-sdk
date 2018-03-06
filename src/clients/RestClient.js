@@ -50,11 +50,6 @@ const normalizeQueryParams = (params) => {
 };
 
 export const createRestClient = ({ baseUrl = BaseUrls.production, timeout = 0 } = {}) => {
-    const client = axios.create({
-        baseURL: baseUrl,
-        timeout
-    });
-
     return (path, method = 'get', params, auth) => {
         const headers = {
             Accept: 'application/json'
@@ -64,7 +59,7 @@ export const createRestClient = ({ baseUrl = BaseUrls.production, timeout = 0 } 
         }
 
         const query = (method === 'get' && params) ? qs.stringify(normalizeQueryParams(params), { addQueryPrefix: true }) : '';
-        const url = `${baseUrl}${path}${query}`
+        const url = `${baseUrl}${path}${query}`;
 
         const request = {
             method,
