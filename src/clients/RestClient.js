@@ -51,7 +51,11 @@ export const createRestClient = ({ baseUrl = 'https://api.wixrestaurants.com/v2'
             Accept: 'application/json'
         };
         if (auth) {
-            headers.Authorization = `${auth.type} ${auth.credentials}`;
+            if (typeof(auth) === 'string') {
+                headers.Authorization = `Bearer ${auth}`;
+            } else {
+                headers.Authorization = `${auth.type} ${auth.credentials}`;
+            }
         }
 
         const query = (method === 'get' && params) ? qs.stringify(normalizeQueryParams(params), { addQueryPrefix: true }) : '';
