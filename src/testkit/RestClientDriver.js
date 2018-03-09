@@ -24,11 +24,11 @@ export default class RestClientDriver {
         };
 
         if (auth) {
-          if (typeof(auth) === 'string') {
-              _nockParams.headers.Authorization = `Bearer ${auth}`;
-          } else {
-              _nockParams.headers.Authorization = `${auth.type} ${auth.credentials}`;
-          }
+            if (typeof(auth) === 'string') {
+                _nockParams.headers.Authorization = `Bearer ${auth}`;
+            } else {
+                _nockParams.headers.Authorization = `${auth.type} ${auth.credentials}`;
+            }
         }
 
         if (method === 'get' && params) {
