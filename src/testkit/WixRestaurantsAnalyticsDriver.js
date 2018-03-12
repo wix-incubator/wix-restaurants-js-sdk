@@ -18,15 +18,16 @@ export default class WixRestaurantsAnalyticsDriver {
     restaurantOrderStats({ accessToken, restaurantId, metric, groupBy, timezone, since, until, statuses, platforms }) {
         return this._aRequestFor({
             resource: `/restaurants/${restaurantId}/orders/stats`,
-            query: {
+            query: Object.assign({
                 metric,
                 group_by: groupBy,
                 time_zone: timezone,
                 since,
-                until,
-                ...(statuses ? {statuses} : {}),
-                ...(platforms ? {platforms} : {})
+                until
             },
+                (statuses ? {statuses} : {}),
+                (platforms ? {platforms} : {})
+            ),
             accessToken
         });
     }
@@ -34,15 +35,16 @@ export default class WixRestaurantsAnalyticsDriver {
     chainOrderStats({ accessToken, chainId, metric, groupBy, timezone, since, until, statuses, platforms }) {
         return this._aRequestFor({
             resource: `/chains/${chainId}/orders/stats`,
-            query: {
+            query: Object.assign({
                 metric,
                 group_by: groupBy,
                 time_zone: timezone,
                 since,
-                until,
-                ...(statuses ? {statuses} : {}),
-                ...(platforms ? {platforms} : {})
+                until
             },
+                (statuses ? {statuses} : {}),
+                (platforms ? {platforms} : {})
+            ),
             accessToken
         });
     }
