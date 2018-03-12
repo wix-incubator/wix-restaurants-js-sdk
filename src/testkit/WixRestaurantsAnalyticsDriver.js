@@ -24,8 +24,8 @@ export default class WixRestaurantsAnalyticsDriver {
                 time_zone: timezone,
                 since,
                 until,
-                statuses,
-                platforms
+                ...(statuses ? {statuses} : {}),
+                ...(platforms ? {platforms} : {})
             },
             accessToken
         });
@@ -40,8 +40,8 @@ export default class WixRestaurantsAnalyticsDriver {
                 time_zone: timezone,
                 since,
                 until,
-                statuses,
-                platforms
+                ...(statuses ? {statuses} : {}),
+                ...(platforms ? {platforms} : {})
             },
             accessToken
         });

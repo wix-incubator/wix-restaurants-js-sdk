@@ -200,6 +200,32 @@ describe('WixRestaurantsAnalyticsClient', () => {
                 expect(stats).to.deep.equal(someStats);
             });
         });
+
+        it('returns the restaurant order stats without optional params', () => {
+            driver.restaurantOrderStats({
+                accessToken: someAccessToken,
+                restaurantId: someRestaurantId,
+                metric: someMetric,
+                groupBy: someGroupBy,
+                timezone: someTimezone,
+                since: someSince,
+                until: someUntil
+            }).succeedWith({
+                stats: someStats
+            });
+
+            return wixRestaurantsAnalyticsClient.restaurantOrderStats({
+                accessToken: someAccessToken,
+                restaurantId: someRestaurantId,
+                metric: someMetric,
+                groupBy: someGroupBy,
+                timezone: someTimezone,
+                since: someSince,
+                until: someUntil
+            }).then((stats) => {
+                expect(stats).to.deep.equal(someStats);
+            });
+        });
     });
 
     describe('chainOrderStats', () => {
