@@ -29,6 +29,7 @@ describe('helpers: Order', () => {
                 fixtures.ChargeV2().id('charge6').percentageDiscount({percentage:20000, itemIds:['itemid'], chargeIds:['charge7']}).val(),
                 fixtures.ChargeV2().id('charge7').percentageDiscount({percentage:10000}).val(),
                 fixtures.ChargeV2().id('charge8').min(500000).percentageDiscount({percentage:10000}).val(),
+                fixtures.ChargeV2().id('charge9').min(500000).percentageDiscount({percentage:10000}).mandatory().close().val(),
             ];
 
             const orderCharges = Order.getOrderCharges({orderItems, dispatchType, dispatchTime, chargesV2});
