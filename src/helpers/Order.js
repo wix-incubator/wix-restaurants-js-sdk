@@ -30,7 +30,7 @@ export default {
                 });
 
                 if (!isApplicable) {
-                    if (charge.mandatory) {
+                    if (charge.mandatory && !charge.state === 'closed') {
                         return {chargeId:charge.id, amount:0};
                     } else {
                         return null;
