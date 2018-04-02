@@ -83,33 +83,35 @@ export default class WixRestaurantsAnalyticsClient {
     }
 
     restaurantOrderStats({accessToken, restaurantId, metric, groupBy, timezone, since, until, statuses, platforms}) {
+        const statusesStr = stringArray(statuses);
+        const platformsStr = stringArray(platforms);
+
         return this._request({
             resource: `/restaurants/${restaurantId}/orders/stats`,
-            params: {
+            params: Object.assign({}, {
                 metric,
                 group_by: groupBy,
                 time_zone: timezone,
                 since,
-                until,
-                statuses: stringArray(statuses),
-                platforms: stringArray(platforms)
-            },
+                until
+            }, (statusesStr ? {statuses: statusesStr} : {}), (platformsStr ? {platforms: platformsStr} : {})),
             accessToken
         }).then(value => value.stats);
     }
 
     chainOrderStats({accessToken, chainId, metric, groupBy, timezone, since, until, statuses, platforms}) {
+        const statusesStr = stringArray(statuses);
+        const platformsStr = stringArray(platforms);
+
         return this._request({
             resource: `/chains/${chainId}/orders/stats`,
-            params: {
+            params: Object.assign({}, {
                 metric,
                 group_by: groupBy,
                 time_zone: timezone,
                 since,
-                until,
-                statuses: stringArray(statuses),
-                platforms: stringArray(platforms)
-            },
+                until
+            }, (statusesStr ? {statuses: statusesStr} : {}), (platformsStr ? {platforms: platformsStr} : {})),
             accessToken
         }).then(value => value.stats);
     }
