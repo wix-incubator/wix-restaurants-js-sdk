@@ -72,10 +72,10 @@ export default class RestClientDriver {
 
     _addRule({path, method, query, headers, data, delay = 0, status = 200, response}) {
         let _nock = this._nockable.nock;
+        _nock = _nock[method](path, data);
         _.each(headers, (value, key) => {
             _nock = _nock.matchHeader(key, value);
         });
-        _nock = _nock[method](path, data);
         _nock = _nock.query(query);
         _nock = _nock.delayConnection(delay);
         _nock = _nock.times(-1);
