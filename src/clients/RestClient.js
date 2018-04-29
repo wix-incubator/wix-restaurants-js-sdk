@@ -5,15 +5,8 @@ import qs from 'qs';
 const baseErrorType = 'https://www.wixrestaurants.com/errors/';
 
 const parseSuccess = (response) => {
-    if (response.data) {
-        return Q.resolve(response.data);
-    } else {
-        return Q.reject({
-            type: `${baseErrorType}protocol`,
-            title: 'Protocol error',
-            detail: 'successful response was empty'
-        });
-    }
+    // some requests return empty response
+    return Q.resolve(response.data);
 };
 
 const parseError = (error) => {
