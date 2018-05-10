@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import queryString from 'query-string';
 
 export default class RestClientDriver {
     constructor({ nockable }) {
@@ -72,6 +73,14 @@ export default class RestClientDriver {
 
     _addRule({path, method, query, headers, data, delay = 0, status = 200, response}) {
         let _nock = this._nockable.nock;
+        let queryIndex = path.indexOf('?');
+
+        if (queryIndex > -1) {
+            const queries = queryString.parse(path.substr(queryIndex + 1));
+            query = Object.assign({}, query, queries);
+            path = path.substring(0, queryIndex);
+        }
+
         _nock = _nock[method](path, data);
         _.each(headers, (value, key) => {
             _nock = _nock.matchHeader(key, value);
