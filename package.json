@@ -35,8 +35,7 @@
     "moment-timezone": "^0.5.7",
     "point-in-polygon": "^1.0.1",
     "q": "^1.4.1",
-    "qs": "^6.5.1",
-    "query-string": "^6.1.0"
+    "qs": "^6.5.1"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",

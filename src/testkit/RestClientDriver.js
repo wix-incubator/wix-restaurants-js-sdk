@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import queryString from 'query-string';
+import queryString from 'qs';
 
 export default class RestClientDriver {
     constructor({ nockable }) {
