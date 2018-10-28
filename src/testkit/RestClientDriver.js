@@ -88,6 +88,6 @@ export default class RestClientDriver {
         _nock = _nock.query(query);
         _nock = _nock.delayConnection(delay);
         _nock = _nock.times(-1);
-        _nock.reply(status, response);
+        _nock.reply(status, response, { 'Access-Control-Allow-Origin': '*' });
     }
 }
