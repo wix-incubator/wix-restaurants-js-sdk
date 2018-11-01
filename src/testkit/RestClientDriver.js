@@ -1,6 +1,8 @@
 import _ from 'lodash';
 import queryString from 'qs';
 
+const RESPONSE_HEADERS = { 'Access-Control-Allow-Origin': '*', 'access-control-allow-headers': 'Authorization' };
+
 export default class RestClientDriver {
     constructor({ nockable }) {
         this._nockable = nockable;
@@ -81,6 +83,11 @@ export default class RestClientDriver {
             path = path.substring(0, queryIndex);
         }
 
+        if (headers.Authorization) {
+            _nock = _nock.options(path)
+              .reply(200, null, RESPONSE_HEADERS);
+        }
+
         _nock = _nock[method](path, data);
         _.each(headers, (value, key) => {
             _nock = _nock.matchHeader(key, value);
@@ -88,6 +95,6 @@ export default class RestClientDriver {
         _nock = _nock.query(query);
         _nock = _nock.delayConnection(delay);
         _nock = _nock.times(-1);
-        _nock.reply(status, response, { 'Access-Control-Allow-Origin': '*' });
+        _nock.reply(status, response, RESPONSE_HEADERS);
     }
 }
