@@ -1,11 +1,12 @@
 import _ from 'lodash';
 import queryString from 'qs';
 
-const RESPONSE_HEADERS = { 'Access-Control-Allow-Origin': '*', 'access-control-allow-headers': 'Authorization' };
+const RESPONSE_HEADERS = { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Authorization' };
 
 export default class RestClientDriver {
-    constructor({ nockable }) {
+    constructor({ nockable, environment = 'node' }) {
         this._nockable = nockable;
+        this._environment = environment;
     }
 
     start() {
@@ -83,9 +84,12 @@ export default class RestClientDriver {
             path = path.substring(0, queryIndex);
         }
 
-        if (headers.Authorization) {
-            _nock = _nock.options(path)
-              .reply(200, null, RESPONSE_HEADERS);
+        if (this._environment === 'browser') {
+            _nock = _nock.options(path);
+            _.each(headers, (value, key) => {
+                _nock = _nock.matchHeader(key, value);
+            });
+            _nock.reply(200, null, RESPONSE_HEADERS);
         }
 
         _nock = _nock[method](path, data);
