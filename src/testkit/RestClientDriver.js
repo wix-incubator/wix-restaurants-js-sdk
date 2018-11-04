@@ -85,11 +85,7 @@ export default class RestClientDriver {
         }
 
         if (this._environment === 'browser') {
-            _nock = _nock.options(path);
-            _.each(headers, (value, key) => {
-                _nock = _nock.matchHeader(key, value);
-            });
-            _nock.reply(200, null, RESPONSE_HEADERS);
+            _nock = _nock.options(path).reply(200, null, RESPONSE_HEADERS);
         }
 
         _nock = _nock[method](path, data);
