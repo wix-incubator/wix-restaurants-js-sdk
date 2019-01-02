@@ -34,7 +34,8 @@ export default {
         }
 
         if (wixMediaManagerUrlPattern.test(url)) {
-            const filename = webpEnabled ? 'file.webp' : 'file.jpg';
+            const extension = url.match(/\.[0-9A-z]+$/) || '.jpg';
+            const filename = webpEnabled ? 'file.webp' : ('file' + extension);
             return (width > 0 && height > 0 && width <= wixMediaPlatformMaxPixels && height <= wixMediaPlatformMaxPixels) ? `${url}/v1/fill/w_${width},h_${height}${usmString}/${filename}` : url;
         }
 
