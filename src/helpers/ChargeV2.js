@@ -134,11 +134,12 @@ export default {
         var orderItems = params.orderItems || [];
         var source = params.source;
         var platform = params.platform;
+        var couponHashCode = params.couponHashCode;
 
         if (charge.state === 'closed') return false;
 
         return checkCondition({condition:charge.condition, deliveryTime:deliveryTime, deliveryType:deliveryType,
-            orderItems:orderItems, source:source, platform:platform});
+            orderItems:orderItems, source:source, platform:platform, couponHashCode});
     },
 
     isDisplayable : function(params) {
@@ -148,11 +149,12 @@ export default {
         var orderItems = params.orderItems || [];
         var source = params.source;
         var platform = params.platform;
+        var couponHashCode = params.couponHashCode;
 
         if (charge.state === 'closed') return false;
 
         return checkCondition({condition:charge.displayCondition, deliveryTime:deliveryTime, deliveryType:deliveryType,
-            orderItems:orderItems, source:source, platform:platform});
+            orderItems:orderItems, source:source, platform:platform, couponHashCode});
     },
 
     calculateAmount : function(params) {

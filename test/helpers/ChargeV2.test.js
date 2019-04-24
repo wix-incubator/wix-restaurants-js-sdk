@@ -92,6 +92,24 @@ describe('helpers: ChargesV2', () => {
             expect(ChargeV2.isDisplayable({
                 charge:minCharge, orderItems:[{price:1000}], deliveryType:'delivery', deliveryTime:now, platform:'mobileweb'})).to.be.true;
         });
+
+        it('charge with a coupon is displayable and applicable, given a correct hash code', () => {
+            const charge = fixtures.ChargeV2().
+                coupon('aCode').
+                val();
+
+            expect(ChargeV2.isDisplayable({charge, couponHashCode: 'aCode'})).to.be.true;
+            expect(ChargeV2.isApplicable({charge, couponHashCode: 'aCode'})).to.be.true;
+        });
+
+        it('charge with a coupon is not displayable and applicable, given an incorrect hash code', () => {
+            const charge = fixtures.ChargeV2().
+                coupon('aCode').
+                val();
+
+            expect(ChargeV2.isDisplayable({charge, couponHashCode: 'aCode2'})).to.be.false;
+            expect(ChargeV2.isApplicable({charge, couponHashCode: 'aCode2'})).to.be.false;
+        });
     });
 
     describe('calculateAmount', () => {

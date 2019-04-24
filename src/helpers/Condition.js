@@ -131,6 +131,14 @@ const CONDITIONS = {
     },
     'user_charge_usage': function() {
         throw new Error('user_charge_usage not implemented yet.');
+    },
+    'order_coupon': function(params) {
+        var condition = params.condition;
+        var couponHashCode = params.couponHashCode;
+
+        return {
+            value: couponHashCode === condition.couponHashCode
+        };
     }
 };
 

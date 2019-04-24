@@ -137,6 +137,18 @@ export default function createCharge() {
             return this;
         },
 
+        coupon(couponHashCode) {
+            const condition = {
+                type: 'order_coupon',
+                couponHashCode
+            };
+
+            fixture.condition.conditions.unshift(condition);
+            fixture.displayCondition.conditions.unshift(condition);
+
+            return this;
+        },
+
         displayConditionDeliveryTypes(types) {
             if (types) {
                 fixture.displayCondition.conditions[1] = {
