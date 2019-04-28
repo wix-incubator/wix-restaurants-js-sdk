@@ -30,11 +30,14 @@ describe('helpers: Order', () => {
                 fixtures.ChargeV2().id('charge7').percentageDiscount({percentage:10000}).val(),
                 fixtures.ChargeV2().id('charge8').min(500000).percentageDiscount({percentage:10000}).val(),
                 fixtures.ChargeV2().id('charge9').min(500000).percentageDiscount({percentage:10000}).mandatory().close().val(),
+                fixtures.ChargeV2().id('charge10').percentageDiscount({percentage: 10000}).coupon('aCode').val(),
+                fixtures.ChargeV2().id('charge11').percentageDiscount({percentage: 10000}).coupon('aCode2').val(),
             ];
 
-            const orderCharges = Order.getOrderCharges({orderItems, dispatchType, dispatchTime, chargesV2});
+            const orderCharges = Order.getOrderCharges({orderItems, dispatchType, dispatchTime, chargesV2, couponHashCode: 'aCode'});
             expect(orderCharges).to.deep.equal([
                 fixtures.OrderCharge().setChargeId('charge1').setAmount(-100).val(),
+                fixtures.OrderCharge().setChargeId('charge10').setAmount(-100).val(),
                 fixtures.OrderCharge().setChargeId('charge3').setAmount(0).val(),
                 fixtures.OrderCharge().setChargeId('charge4').setAmount(-0).val(), /* Apparently chai doesn't think 0 === -0 */
                 fixtures.OrderCharge().setChargeId('charge5').setAmount(-144).val(),

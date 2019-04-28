@@ -8,7 +8,7 @@ export default {
     /**
      * @return The orderCharges (ChargesV2) that should be added to the order
      */
-    getOrderCharges:function({dispatchType, dispatchTime, orderItems, tip, source, platform, chargesV2, timezone}) {
+    getOrderCharges:function({dispatchType, dispatchTime, orderItems, tip, source, platform, chargesV2, timezone, couponHashCode}) {
 
         let orderCharges = [];
         let prevOrderCharges = [];
@@ -26,7 +26,8 @@ export default {
                     deliveryType    : dispatchType,
                     orderItems      : orderItems,
                     source          : source,
-                    platform        : platform
+                    platform        : platform,
+                    couponHashCode
                 });
 
                 if (!isApplicable) {
@@ -44,7 +45,8 @@ export default {
                         tip             : tip,
                         platform        : platform,
                         orderItems      : orderItems,
-                        orderCharges    : orderCharges
+                        orderCharges    : orderCharges,
+                        couponHashCode
                     });
                     if((charge.mandatory) || (amount != 0)) {
                         return {
@@ -57,7 +59,8 @@ export default {
                                 tip             : tip,
                                 platform        : platform,
                                 orderItems      : orderItems,
-                                orderCharges    : orderCharges
+                                orderCharges    : orderCharges,
+                                couponHashCode
                             })
                         };
                     } else {
