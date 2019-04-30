@@ -50,6 +50,19 @@ describe('helpers: Condition', () => {
 
         expect(Condition.checkConditionWithReasons({
             condition: {
+                type: 'or',
+                conditions: [{
+                    type: 'order_coupon',
+                    couponHashCode: 'foo'
+                }]
+            }
+        })).to.deep.equal({
+            value: false,
+            reasons: ['order_coupon']
+        });
+
+        expect(Condition.checkConditionWithReasons({
+            condition: {
                 "type": "and",
                 "conditions": [{
                     "type": "true"

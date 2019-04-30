@@ -137,7 +137,8 @@ const CONDITIONS = {
         var couponHashCode = params.couponHashCode;
 
         return {
-            value: couponHashCode === condition.couponHashCode
+            value: couponHashCode === condition.couponHashCode,
+            reasons: ['order_coupon']
         };
     }
 };
