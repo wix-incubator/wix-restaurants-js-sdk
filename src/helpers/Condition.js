@@ -7,12 +7,12 @@ const CONDITIONS = {
         return { value: true, reasons: [] };
     },
     'false': function() {
-        return { value: false, reasons: ['false'] };
+        return { value: false, reasons: [{reason: 'false'}] };
     },
     'not': function(params) {
         var condition = params.condition;
         const ret = {
-            value: !checkConditionWithReasons(_.extend(params, {condition:condition.condition})).value,
+            value: !checkRecur(_.extend(params, {condition:condition.condition})).value,
             reasons: []
         };
 
@@ -22,7 +22,7 @@ const CONDITIONS = {
         var condition = params.condition;
 
         const results = _.map(condition.conditions, _condition =>
-            checkConditionWithReasons(_.extend(params, {condition:_condition})));
+            checkRecur(_.extend(params, {condition:_condition})));
 
         const value = _.every(results, r => r.value);
 
@@ -35,14 +35,14 @@ const CONDITIONS = {
 
         return {
             value,
-            reasons: _.flatten(_.map(_.filter(results, r => !r.value), r => r.reasons))
+            reasons: joinReasons(results)
         };
     },
     'or': function(params) {
         const condition = params.condition;
 
         const results = _.map(condition.conditions, _condition =>
-            checkConditionWithReasons(_.extend(params, {condition:_condition})));
+            checkRecur(_.extend(params, {condition:_condition})));
 
         const value = _.some(results, r => r.value);
         if (value) {
@@ -54,7 +54,7 @@ const CONDITIONS = {
 
         return {
             value,
-            reasons: _.flatten(_.map(_.filter(results, r => !r.value), r => r.reasons))
+            reasons: joinReasons(results)
         };
     },
     'order_delivery_time': function(params) {
@@ -74,9 +74,14 @@ const CONDITIONS = {
         }
 
         var status = util.next();
+
         return {
             value: !(status.status === 'unavailable'),
-            reasons: [status.reason || 'order_delivery_time']
+            reasons: [{
+                reason: status.reason || 'order_delivery_time',
+                availability: condition.availability,
+                actual: deliveryTime
+            }]
         };
     },
     'order_delivery_type': function(params) {
@@ -85,7 +90,11 @@ const CONDITIONS = {
 
         return {
             value: condition.deliveryType === deliveryType,
-            reasons: ['order_delivery_type']
+            reasons: [{
+                reason: 'order_delivery_type',
+                deliveryType: condition.deliveryType,
+                actual: deliveryType
+            }]
         };
     },
     'order_items_price': function(params) {
@@ -99,12 +108,20 @@ const CONDITIONS = {
 
         if ((condition.min) && (totalApplicableItems < condition.min)) return {
             value: false,
-            reasons: ['order_items_price_min']
+            reasons: [{
+                reason: 'order_items_price_min',
+                min: condition.min,
+                actual: totalApplicableItems
+            }]
         };
 
         if ((condition.max) && (totalApplicableItems > condition.max)) return {
             value: false,
-            reasons: ['order_items_price_max']
+            reasons: [{
+                reason: 'order_items_price_max',
+                max: condition.max,
+                actual: totalApplicableItems
+            }]
         };
 
         return { value: true, reasons:[] };
@@ -115,7 +132,11 @@ const CONDITIONS = {
 
         const ret = {
             value: platform === condition.platform,
-            reasons: ['order_platform']
+            reasons: [{
+                reason: 'order_platform',
+                platform: condition.platform,
+                actual: platform
+            }]
         };
 
         return ret;
@@ -126,7 +147,11 @@ const CONDITIONS = {
 
         return {
             value: source === condition.source,
-            reasons: ['order_source']
+            reasons: [{
+                reason: 'order_source',
+                source: condition.source,
+                actual: source
+            }]
         };
     },
     'user_charge_usage': function() {
@@ -138,16 +163,30 @@ const CONDITIONS = {
 
         return {
             value: couponHashCode === condition.couponHashCode,
-            reasons: ['order_coupon']
+            reasons: [{
+                reason: 'order_coupon',
+                couponHashCode: condition.couponHashCode,
+                actual: couponHashCode
+            }]
         };
     }
 };
 
-export function checkConditionWithReasons(params) {
-    var condition = params.condition;
+function joinReasons(results) {
+    return _.flatten(_.map(_.filter(results, r => !r.value), r => r.reasons));
+}
 
-    var func = CONDITIONS[condition.type] || function() { return { value: false, reasons:[] }; };
+function checkRecur(params) {
+    const condition = params.condition;
+    const func = CONDITIONS[condition.type] || function() { return { value: false, reasons:[] }; };
     return func(params);
+}
+
+export function checkConditionWithReasons(params) {
+    const result = checkRecur(params);
+    result.elaborateReasons = result.reasons;
+    result.reasons = _.map(result.elaborateReasons, 'reason');
+    return result;
 }
 
 export function checkCondition(params) {
