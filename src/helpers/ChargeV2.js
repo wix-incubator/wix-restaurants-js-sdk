@@ -157,6 +157,29 @@ export default {
             orderItems:orderItems, source:source, platform:platform, couponHashCode});
     },
 
+    isRestrictedByOrderItems : function(params) {
+        const amount = this.calculateAmount(params);
+        const extractValues = (o, path) => {
+            if (!o || typeof o !== 'object')
+                return [];
+
+            const values = _.get(o, path) || [];
+            const nextValues = Object.keys(o).map(key => {
+                return extractValues(o[key], path);
+            });
+            return values.concat(_.flatten(nextValues));
+        };
+
+        if (!amount) {
+            const itemIds = extractValues(params.charge.operator, 'items.ids');
+            const orderItems = itemIds.map(id => ({ itemId: id }));
+            const otherAmount = this.calculateAmount({...params, orderItems});
+            return !!otherAmount;
+        }
+
+        return false;
+    },
+
     calculateAmount : function(params) {
         var charge = params.charge;
         var tip = params.tip || 0;

@@ -141,4 +141,28 @@ describe('helpers: ChargesV2', () => {
         });
     });
 
+    describe('isRestrictedByOrderItems', () => {
+        it('should return true, given charge is restricted by other orderItems', () => {
+            const orderItems = [fixtures.OrderItem().setItemId('b').val()];
+            const charge = fixtures.ChargeV2().fixedDiscount({price: 200, itemIds: ['a']}).val();
+            const result = ChargeV2.isRestrictedByOrderItems({
+                charge,
+                orderItems
+            });
+
+            expect(result).to.equal(true);
+        });
+
+        it('should return false, given charge is restricted by the given orderItems', () => {
+            const orderItems = [fixtures.OrderItem().setItemId('a').val()];
+            const charge = fixtures.ChargeV2().fixedDiscount({price: 200, itemIds: ['a']}).val();
+            const result = ChargeV2.isRestrictedByOrderItems({
+                charge,
+                orderItems
+            });
+
+            expect(result).to.equal(false);
+        });
+    });
+
 });
