@@ -153,9 +153,9 @@ describe('helpers: ChargesV2', () => {
             expect(result).to.equal(true);
         });
 
-        it('should return true, given charge is restricted by other orderItems - complex charge', () => {
-            const orderItems = [fixtures.OrderItem().setItemId('b').val()];
-            const charge = fixtures.ChargeV2().fixedDiscount({price: 200, itemIds: ['a']}).val();
+        it.only('should return true, given charge is restricted by other orderItems - complex charge', () => {
+            const orderItems = [fixtures.OrderItem().setItemId('c').setPrice(900).val()];
+            const charge = fixtures.ChargeV2().fixedDiscount({price: 200}).val();
             charge.operator = {
                 type: "max",
                 operators: [{
@@ -165,7 +165,7 @@ describe('helpers: ChargesV2', () => {
                         items: {
                             type: "include",
                             ids: [
-                                "a"
+                                "d"
                             ]
                         },
                         charges: {
