@@ -153,6 +153,64 @@ describe('helpers: ChargesV2', () => {
             expect(result).to.equal(true);
         });
 
+        it('should return true, given charge is restricted by other orderItems - complex charge', () => {
+            const orderItems = [fixtures.OrderItem().setItemId('b').val()];
+            const charge = fixtures.ChargeV2().fixedDiscount({price: 200, itemIds: ['a']}).val();
+            charge.operator = {
+                type: "max",
+                operators: [{
+                    type: "multiply",
+                    numerators: [{
+                        type: "count_items",
+                        items: {
+                            type: "include",
+                            ids: [
+                                "a"
+                            ]
+                        },
+                        charges: {
+                            type: "include",
+                            ids: []
+                        }
+                    },
+                    {
+                        type: "value",
+                        value: 1000
+                    }
+                    ],
+                    denominators: [{
+                        type: "value",
+                        value: -1
+                    }]
+                },
+                {
+                    type: "multiply",
+                    numerators: [{
+                        type: "sum_prices",
+                        items: {
+                            type: "exclude",
+                            ids: []
+                        },
+                        charges: {
+                            type: "include",
+                            ids: []
+                        }
+                    }],
+                    denominators: [{
+                        type: "value",
+                        value: -1
+                    }]
+                }
+                ]
+            };
+            const result = ChargeV2.isRestrictedByOrderItems({
+                charge,
+                orderItems
+            });
+
+            expect(result).to.equal(true);
+        });
+
         it('should return false, given charge is restricted by the given orderItems', () => {
             const orderItems = [fixtures.OrderItem().setItemId('a').val()];
             const charge = fixtures.ChargeV2().fixedDiscount({price: 200, itemIds: ['a']}).val();

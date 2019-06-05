@@ -172,7 +172,7 @@ export default {
 
         if (!amount) {
             const itemIds = extractValues(params.charge.operator, 'items.ids');
-            const orderItems = itemIds.map(id => ({ itemId: id }));
+            const orderItems = itemIds.map(id => ({ itemId: id, price: 1}));
             const otherAmount = this.calculateAmount({...params, orderItems});
             return !!otherAmount;
         }
