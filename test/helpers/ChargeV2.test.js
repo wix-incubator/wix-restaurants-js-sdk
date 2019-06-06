@@ -158,49 +158,57 @@ describe('helpers: ChargesV2', () => {
             const charge = fixtures.ChargeV2().fixedDiscount({price: 200}).val();
             charge.operator = {
                 type: "max",
-                operators: [{
-                    type: "multiply",
-                    numerators: [{
-                        type: "count_items",
-                        items: {
-                            type: "include",
-                            ids: [
-                                "d"
-                            ]
-                        },
-                        charges: {
-                            type: "include",
-                            ids: []
-                        }
+                "operators": [
+                    {
+                        "type": "multiply",
+                        "numerators": [
+                            {
+                                "type": "sum_prices",
+                                "items": {
+                                    "type": "include",
+                                    "ids": [
+                                        "jjj"
+                                    ]
+                                },
+                                "charges": {
+                                    "type": "include",
+                                    "ids": []
+                                }
+                            },
+                            {
+                                "type": "value",
+                                "value": 10000
+                            }
+                        ],
+                        "denominators": [
+                            {
+                                "type": "value",
+                                "value": -100000
+                            }
+                        ]
                     },
                     {
-                        type: "value",
-                        value: 1000
+                        "type": "multiply",
+                        "numerators": [
+                            {
+                                "type": "sum_prices",
+                                "items": {
+                                    "type": "exclude",
+                                    "ids": []
+                                },
+                                "charges": {
+                                    "type": "include",
+                                    "ids": []
+                                }
+                            }
+                        ],
+                        "denominators": [
+                            {
+                                "type": "value",
+                                "value": -1
+                            }
+                        ]
                     }
-                    ],
-                    denominators: [{
-                        type: "value",
-                        value: -1
-                    }]
-                },
-                {
-                    type: "multiply",
-                    numerators: [{
-                        type: "sum_prices",
-                        items: {
-                            type: "exclude",
-                            ids: []
-                        },
-                        charges: {
-                            type: "include",
-                            ids: []
-                        }
-                    }],
-                    denominators: [{
-                        type: "value",
-                        value: -1
-                    }]
-                }
                 ]
             };
             const result = ChargeV2.isRestrictedByOrderItems({
