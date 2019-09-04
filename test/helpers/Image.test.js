@@ -9,14 +9,21 @@ describe('Image', () => {
         const googleImagesApiUrl1 = 'https://lh4.ggpht.com/XXX';
         const googleImagesApiUrl2 = 'https://lh3.googleusercontent.com/XXX';
         const wixMediaPlatformUrl1 = "https://media.wixapps.net/ggl-XXX/images/YYY/";
+        const wixMediaPlatformUrl1b = "https://media.wixapps.net/ggl-XXX/images/YYY";
         const wixMediaPlatformUrl2 = "https://XXX.wixmp.com/YYY/images/ZZZ/";
         const wixMediaManagerUrl = 'https://static.wixstatic.com/media/YYY.jpg';
         const unrecognizedUrl = 'https://www.example.org/XXX';
+        const newWixMediaPlatformUrl1 = 'https://images-wixmp-190fec74f1fdb50de9162c9d.wixmp.com/ggl-XXX/images/YYY';
 
         it('returns null when no URL is given', () => {
             expect(Image.fill()).to.be.null;
             expect(Image.fill({})).to.be.null;
             expect(Image.fill({width:100, height:100})).to.be.null;
+        });
+
+        it ('returns new URL (EGEG)', () => {
+            expect(Image.fill({url: wixMediaPlatformUrl1})).to.equal(newWixMediaPlatformUrl1);
+            expect(Image.fill({url: wixMediaPlatformUrl1b})).to.equal(newWixMediaPlatformUrl1);
         });
 
         it('resizes Google Images API URLs when given a supported size', () => {
@@ -50,49 +57,49 @@ describe('Image', () => {
         });
 
         it('resizes Wix Media Platform URLs when given a supported size', () => {
-            expect(Image.fill({url: wixMediaPlatformUrl1, width:150, height:250})).to.equal(wixMediaPlatformUrl1);
+            expect(Image.fill({url: wixMediaPlatformUrl1, width:150, height:250})).to.equal(newWixMediaPlatformUrl1);
             expect(Image.fill({url: wixMediaPlatformUrl2, width:150, height:250})).to.equal(wixMediaPlatformUrl2);
 
-            expect(Image.fill({url: wixMediaPlatformUrl1, width:5100, height:100})).to.equal(wixMediaPlatformUrl1);
+            expect(Image.fill({url: wixMediaPlatformUrl1, width:5100, height:100})).to.equal(newWixMediaPlatformUrl1);
             expect(Image.fill({url: wixMediaPlatformUrl2, width:5100, height:100})).to.equal(wixMediaPlatformUrl2);
 
-            expect(Image.fill({url: wixMediaPlatformUrl1, width:100, height:5100})).to.equal(wixMediaPlatformUrl1);
+            expect(Image.fill({url: wixMediaPlatformUrl1, width:100, height:5100})).to.equal(newWixMediaPlatformUrl1);
             expect(Image.fill({url: wixMediaPlatformUrl2, width:100, height:5100})).to.equal(wixMediaPlatformUrl2);
 
             expect(Image.fill({url: wixMediaPlatformUrl2, width:100, height:5100, webpEnabled:true})).to.equal(wixMediaPlatformUrl2);
         });
 
         it('resizes Wix Media Platform URLs to their maximum size when given unsupported size', () => {
-            expect(Image.fill({url: wixMediaPlatformUrl1, width:-1, height:-1})).to.equal(wixMediaPlatformUrl1);
+            expect(Image.fill({url: wixMediaPlatformUrl1, width:-1, height:-1})).to.equal(newWixMediaPlatformUrl1);
             expect(Image.fill({url: wixMediaPlatformUrl2, width:-1, height:-1})).to.equal(wixMediaPlatformUrl2);
 
-            expect(Image.fill({url: wixMediaPlatformUrl1, width:-1, height:100})).to.equal(wixMediaPlatformUrl1);
+            expect(Image.fill({url: wixMediaPlatformUrl1, width:-1, height:100})).to.equal(newWixMediaPlatformUrl1);
             expect(Image.fill({url: wixMediaPlatformUrl2, width:-1, height:100})).to.equal(wixMediaPlatformUrl2);
 
-            expect(Image.fill({url: wixMediaPlatformUrl1, width:100, height:-1})).to.equal(wixMediaPlatformUrl1);
+            expect(Image.fill({url: wixMediaPlatformUrl1, width:100, height:-1})).to.equal(newWixMediaPlatformUrl1);
             expect(Image.fill({url: wixMediaPlatformUrl2, width:100, height:-1})).to.equal(wixMediaPlatformUrl2);
 
-            expect(Image.fill({url: wixMediaPlatformUrl1, width:0, height:0})).to.equal(wixMediaPlatformUrl1);
+            expect(Image.fill({url: wixMediaPlatformUrl1, width:0, height:0})).to.equal(newWixMediaPlatformUrl1);
             expect(Image.fill({url: wixMediaPlatformUrl2, width:0, height:0})).to.equal(wixMediaPlatformUrl2);
 
-            expect(Image.fill({url: wixMediaPlatformUrl1, width:0, height:100})).to.equal(wixMediaPlatformUrl1);
+            expect(Image.fill({url: wixMediaPlatformUrl1, width:0, height:100})).to.equal(newWixMediaPlatformUrl1);
             expect(Image.fill({url: wixMediaPlatformUrl2, width:0, height:100})).to.equal(wixMediaPlatformUrl2);
 
-            expect(Image.fill({url: wixMediaPlatformUrl1, width:100, height:0})).to.equal(wixMediaPlatformUrl1);
+            expect(Image.fill({url: wixMediaPlatformUrl1, width:100, height:0})).to.equal(newWixMediaPlatformUrl1);
             expect(Image.fill({url: wixMediaPlatformUrl2, width:100, height:0})).to.equal(wixMediaPlatformUrl2);
 
-            expect(Image.fill({url: wixMediaPlatformUrl1, width:5101, height:5101})).to.equal(wixMediaPlatformUrl1);
+            expect(Image.fill({url: wixMediaPlatformUrl1, width:5101, height:5101})).to.equal(newWixMediaPlatformUrl1);
             expect(Image.fill({url: wixMediaPlatformUrl2, width:5101, height:5101})).to.equal(wixMediaPlatformUrl2);
 
-            expect(Image.fill({url: wixMediaPlatformUrl1, width:5101, height:101})).to.equal(wixMediaPlatformUrl1);
+            expect(Image.fill({url: wixMediaPlatformUrl1, width:5101, height:101})).to.equal(newWixMediaPlatformUrl1);
             expect(Image.fill({url: wixMediaPlatformUrl2, width:5101, height:101})).to.equal(wixMediaPlatformUrl2);
 
-            expect(Image.fill({url: wixMediaPlatformUrl1, width:101, height:5101})).to.equal(wixMediaPlatformUrl1);
+            expect(Image.fill({url: wixMediaPlatformUrl1, width:101, height:5101})).to.equal(newWixMediaPlatformUrl1);
             expect(Image.fill({url: wixMediaPlatformUrl2, width:101, height:5101})).to.equal(wixMediaPlatformUrl2);
         });
 
         it('resizes Wix Media PlatformURLs to their maximum size when given no size', () => {
-            expect(Image.fill({url: wixMediaPlatformUrl1})).to.equal(wixMediaPlatformUrl1);
+            expect(Image.fill({url: wixMediaPlatformUrl1})).to.equal(newWixMediaPlatformUrl1);
             expect(Image.fill({url: wixMediaPlatformUrl2})).to.equal(wixMediaPlatformUrl2);
         });
 

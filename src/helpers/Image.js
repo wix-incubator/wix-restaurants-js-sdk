@@ -4,6 +4,8 @@ const googleImagesApiUrlPattern = /^https?:\/\/(.+)\.(googleusercontent|ggpht)\.
 const wixMediaPlatformMaxPixels = 5100; // Actually, width*height must be <= (5100)^2
 const wixMediaPlatformUrlPattern = /^https?:\/\/(media\.wixapps\.net|.+\.wixmp\.com)\/(.+)\/images\/(.+)\/$/;
 const wixMediaManagerUrlPattern = /^https?:\/\/static\.wixstatic\.com\/media\/(.+)$/;
+const deprecatedMediaPlatformUrlPattern = /^https?:\/\/media\.wixapps\.net\//;
+const newWixMediaPlatformUrlPattern = 'https://images-wixmp-190fec74f1fdb50de9162c9d.wixmp.com/';
 
 function getUsmString({ amount, radius, threshold }) {
     if (typeof amount === 'number' && typeof radius === 'number' && typeof threshold === 'number') {
@@ -37,6 +39,15 @@ export default {
             const extension = url.match(/\.[0-9A-z]+$/) || '.jpg';
             const filename = webpEnabled ? 'file.webp' : ('file' + extension);
             return (width > 0 && height > 0 && width <= wixMediaPlatformMaxPixels && height <= wixMediaPlatformMaxPixels) ? `${url}/v1/fill/w_${width},h_${height}${usmString}/${filename}` : url;
+        }
+
+        if (deprecatedMediaPlatformUrlPattern.test(url)) {
+            // Following https://jira.wixpress.com/browse/RST-2829 - replacing with new URL and removing the slash / at the end of the URL.
+            var newUrl = url.replace(deprecatedMediaPlatformUrlPattern  , newWixMediaPlatformUrlPattern);
+            if (newUrl.endsWith("/")) {
+                newUrl = newUrl.slice(0, -1);
+            }
+            return newUrl;
         }
 
         if (wixMediaPlatformUrlPattern.test(url)) {

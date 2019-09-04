@@ -153,7 +153,7 @@ describe('helpers: ChargesV2', () => {
             expect(result).to.equal(true);
         });
 
-        it.only('should return true, given charge is restricted by other orderItems - complex charge', () => {
+        it('should return true, given charge is restricted by other orderItems - complex charge', () => {
             const orderItems = [fixtures.OrderItem().setItemId('c').setPrice(900).val()];
             const charge = fixtures.ChargeV2().fixedDiscount({price: 200}).val();
             charge.operator = {
