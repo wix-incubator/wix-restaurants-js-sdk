@@ -21,7 +21,7 @@ describe('Image', () => {
             expect(Image.fill({width:100, height:100})).to.be.null;
         });
 
-        it ('returns new URL (EGEG)', () => {
+        it ('returns new URL', () => {
             expect(Image.fill({url: wixMediaPlatformUrl1})).to.equal(newWixMediaPlatformUrl1);
             expect(Image.fill({url: wixMediaPlatformUrl1b})).to.equal(newWixMediaPlatformUrl1);
         });
