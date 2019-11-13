@@ -6,6 +6,7 @@ const wixMediaPlatformUrlPattern = /^https?:\/\/(media\.wixapps\.net|.+\.wixmp\.
 const wixMediaManagerUrlPattern = /^https?:\/\/static\.wixstatic\.com\/media\/(.+)$/;
 const deprecatedMediaPlatformUrlPattern = /^https?:\/\/media\.wixapps\.net\//;
 const newWixMediaPlatformUrlPattern = 'https://images-wixmp-190fec74f1fdb50de9162c9d.wixmp.com/';
+const deprecatedMediaPlatformUrlPattern2 = /^https?:\/\/images-rest\.wixmp\.com\//;
 
 function getUsmString({ amount, radius, threshold }) {
     if (typeof amount === 'number' && typeof radius === 'number' && typeof threshold === 'number') {
@@ -48,6 +49,15 @@ export default {
                 newUrl = newUrl.slice(0, -1);
             }
             return newUrl;
+        }
+
+        if (deprecatedMediaPlatformUrlPattern2.test(url)) {
+            // Following https://jira.wixpress.com/browse/RST-2829 - replacing with new URL and removing the slash / at the end of the URL.
+            var newUrl2 = url.replace(deprecatedMediaPlatformUrlPattern2  , newWixMediaPlatformUrlPattern);
+            if (newUrl2.endsWith("/")) {
+                newUrl2 = newUrl2.slice(0, -1);
+            }
+            return newUrl2;
         }
 
         if (wixMediaPlatformUrlPattern.test(url)) {

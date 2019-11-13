@@ -11,6 +11,8 @@ describe('Image', () => {
         const wixMediaPlatformUrl1 = "https://media.wixapps.net/ggl-XXX/images/YYY/";
         const wixMediaPlatformUrl1b = "https://media.wixapps.net/ggl-XXX/images/YYY";
         const wixMediaPlatformUrl2 = "https://XXX.wixmp.com/YYY/images/ZZZ/";
+        const wixMediaPlatformUrl3 = "https://images-rest.wixmp.com/ggl-XXX/images/YYY/";
+        const wixMediaPlatformUrl3b = "https://images-rest.wixmp.com/ggl-XXX/images/YYY";
         const wixMediaManagerUrl = 'https://static.wixstatic.com/media/YYY.jpg';
         const unrecognizedUrl = 'https://www.example.org/XXX';
         const newWixMediaPlatformUrl1 = 'https://images-wixmp-190fec74f1fdb50de9162c9d.wixmp.com/ggl-XXX/images/YYY';
@@ -24,6 +26,8 @@ describe('Image', () => {
         it ('returns new URL', () => {
             expect(Image.fill({url: wixMediaPlatformUrl1})).to.equal(newWixMediaPlatformUrl1);
             expect(Image.fill({url: wixMediaPlatformUrl1b})).to.equal(newWixMediaPlatformUrl1);
+            expect(Image.fill({url: wixMediaPlatformUrl3})).to.equal(newWixMediaPlatformUrl1);
+            expect(Image.fill({url: wixMediaPlatformUrl3b})).to.equal(newWixMediaPlatformUrl1);
         });
 
         it('resizes Google Images API URLs when given a supported size', () => {
