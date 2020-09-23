@@ -1,4 +1,3 @@
-import Q from 'q';
 import axios from 'axios';
 import qs from 'qs';
 
@@ -6,23 +5,23 @@ const baseErrorType = 'https://www.wixrestaurants.com/errors/';
 
 const parseSuccess = (response) => {
     // some requests return empty response
-    return Q.resolve(response.data);
+    return Promise.resolve(response.data);
 };
 
 const parseError = (error) => {
     if (error.response && error.response.data) {
-        return Q.reject(error.response.data);
+        return Promise.reject(error.response.data);
     } else {
         switch(error.code) {
         case 'ECONNABORTED':
-            return Q.reject({
+            return Promise.reject({
                 type: `${baseErrorType}timeout`,
                 title: 'Timeout',
                 detail: 'request timed out'
             });
         case 'ENOTFOUND': // fall through
         default:
-            return Q.reject({
+            return Promise.reject({
                 type: `${baseErrorType}network`,
                 title: 'Network Down',
                 detail: 'network is down'

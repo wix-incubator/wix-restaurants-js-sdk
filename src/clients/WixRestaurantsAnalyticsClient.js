@@ -1,4 +1,3 @@
-import Q from 'q';
 import axios from 'axios';
 
 export const BaseUrls = {
@@ -44,9 +43,9 @@ const stringArray = arr => (!arr || !arr.length ? undefined : arr.join(','));
 
 const parseSuccess = (response) => {
     if (response.data) {
-        return Q.resolve(response.data);
+        return Promise.resolve(response.data);
     } else {
-        return Q.reject({
+        return Promise.reject({
             type: 'https://analytics.wixrestaurants.com/errors/protocol',
             title: 'Protocol error.',
             detail: 'Successful response was empty.'
@@ -56,17 +55,17 @@ const parseSuccess = (response) => {
 
 const parseError = (error) => {
     if (error.response && error.response.data) {
-        return Q.reject(error.response.data);
+        return Promise.reject(error.response.data);
     } else {
         switch(error.code) {
         case 'ECONNABORTED':
-            return Q.reject({
+            return Promise.reject({
                 type: 'https://analytics.wixrestaurants.com/errors/timeout',
                 title: 'Request timed out.'
             });
         case 'ENOTFOUND': // fall through
         default:
-            return Q.reject({
+            return Promise.reject({
                 type: 'https://analytics.wixrestaurants.com/errors/network',
                 title: 'Network is down.'
             });

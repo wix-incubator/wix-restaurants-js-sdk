@@ -14,7 +14,6 @@
     "extends": ["eslint:recommended"],
     "globals": {
         "mapboxgl": true,
-        "Q": true,
         "_": true,
         "google": true,
         "FB": true,
