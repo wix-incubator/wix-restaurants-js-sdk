@@ -34,7 +34,6 @@
     "moment": "^2.15.2",
     "moment-timezone": "^0.5.7",
     "point-in-polygon": "^1.0.1",
-    "q": "^1.4.1",
     "qs": "^6.5.1"
   },
   "devDependencies": {

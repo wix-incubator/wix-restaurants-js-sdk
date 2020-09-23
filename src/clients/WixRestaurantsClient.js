@@ -1,4 +1,3 @@
-import Q from 'q';
 import axios from 'axios';
 
 export const Endpoints = {
@@ -8,16 +7,16 @@ export const Endpoints = {
 const parseSuccess = (response) => {
     if (response.data) {
         if (response.data.error) {
-            return Q.reject({
+            return Promise.reject({
                 error: {
                     code: response.data.error,
                     description: response.data.errorMessage
                 }
             });
         } else if (response.data.value) {
-            return Q.resolve(response.data.value);
+            return Promise.resolve(response.data.value);
         } else {
-            return Q.reject({
+            return Promise.reject({
                 error: {
                     code: 'protocol',
                     description: 'protocol error'
@@ -25,7 +24,7 @@ const parseSuccess = (response) => {
             });
         }
     } else {
-        return Q.reject({
+        return Promise.reject({
             error: {
                 code: 'protocol',
                 description: 'protocol error'
@@ -36,7 +35,7 @@ const parseSuccess = (response) => {
 
 const parseError = (error) => {
     if (error.response) {
-        return Q.reject({
+        return Promise.reject({
             error: {
                 code: 'protocol',
                 description: 'protocol error'
@@ -45,7 +44,7 @@ const parseError = (error) => {
     } else {
         switch(error.code) {
         case 'ECONNABORTED':
-            return Q.reject({
+            return Promise.reject({
                 error: {
                     code: 'timeout',
                     description: 'request timed out'
@@ -53,7 +52,7 @@ const parseError = (error) => {
             });
         case 'ENOTFOUND': // fall through
         default:
-            return Q.reject({
+            return Promise.reject({
                 error: {
                     code: 'network_down',
                     description: 'network is down'
