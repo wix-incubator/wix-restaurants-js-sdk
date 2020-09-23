@@ -28,7 +28,7 @@
   "homepage": "https://github.com/wix/wix-restaurants-js-sdk",
   "dependencies": {
     "availability": "^2.1.254",
-    "axios": "^0.15.3",
+    "axios": "^0.20.0",
     "babel-runtime": "^6.18.0",
     "lodash": "^4.8.2",
     "moment": "^2.15.2",
